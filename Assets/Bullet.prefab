@@ -139,6 +139,7 @@ MonoBehaviour:
   _size: 0.2
   _hitEffectPrefab: {fileID: 2708598583397607911, guid: 6398d43fe79ea0140913dc5530c646af, type: 3}
   _destroyEffectPrefab: {fileID: 1429954232896169633, guid: 83036083a4ebcd34f98131bd3cf6f4d2, type: 3}
+  _hitEffect: {fileID: 8300000, guid: 453eeec3ecef97340a131ee4dfbcb3bb, type: 3}
 --- !u!82 &6958694795924016497
 AudioSource:
   m_ObjectHideFlags: 0
@@ -152,7 +153,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 407305d6ce10bec4f837d2dafbeac09d, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.118
+  m_Volume: 0.924
   m_Pitch: 1
   Loop: 0
   Mute: 0

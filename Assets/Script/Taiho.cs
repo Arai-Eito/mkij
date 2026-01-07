@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Taiho : MonoBehaviour
 {
+    private AudioSource _audioSource;
+    [SerializeField] AudioClip _shootSound;
     [SerializeField] private Transform _startPos;
     public GameObject _bulletPrefab;
     [SerializeField] int _number = 0;
@@ -16,6 +18,7 @@ public class Taiho : MonoBehaviour
 
     private void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         SetNumber(_bulletNumber);
         UpdateNumberText();
     }
@@ -51,7 +54,7 @@ public class Taiho : MonoBehaviour
 
                 Bullet b = obj.GetComponent<Bullet>();
                 b.SetParameter(8, direction,_damage);
-
+                _audioSource.PlayOneShot(_shootSound);
 
                 yield return new WaitForSeconds(0.1f);
             }

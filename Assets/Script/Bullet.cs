@@ -12,6 +12,8 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] GameObject _hitEffectPrefab;
     [SerializeField] GameObject _destroyEffectPrefab;
+    private AudioSource _audioSource;
+    [SerializeField] AudioClip _hitEffect;
     int _damage;
     private static int _count = 0;
     private static int _maxCount = 100;
@@ -25,6 +27,7 @@ public class Bullet : MonoBehaviour
         if (_count >= _maxCount) Destroy(gameObject);
         isInit = true;  
         _rb = GetComponent<Rigidbody>();
+        _audioSource = GetComponent<AudioSource>(); 
         _rb.useGravity = false;
         _rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         Destroy(gameObject, _destroyTime);
@@ -41,6 +44,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         SpawnEffect();
+        _audioSource.PlayOneShot(_hitEffect);
         ContactPoint contact = collision.contacts[0];
 
         _velocity = Vector3.Reflect(_velocity, contact.normal);
