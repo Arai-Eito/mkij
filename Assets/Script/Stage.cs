@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Stage : MonoBehaviour
 {
@@ -27,6 +28,13 @@ public class Stage : MonoBehaviour
     int _presentCount = 0;
     [SerializeField] private float stepTime = 5f;
     private float currentTime;
+
+
+
+    [SerializeField] GameObject _clearLineEffect;
+    [SerializeField] GameObject _deleteEffect;
+
+
     private void Awake()
     {
         if (instance == null)
@@ -82,7 +90,7 @@ public class Stage : MonoBehaviour
     /// 
     public void NextTurn()
     {
-        _level++;
+        _level+=2;
 
         Move();
 
@@ -150,6 +158,11 @@ public class Stage : MonoBehaviour
 
             for (int x = 0; x < _stageSize.x; x++)
             {
+                Block block = GetBlock(new int2(x, z));
+                Vector3 position = block.GetPosition();
+                GameObject fx = Instantiate(_clearLineEffect, position, transform.rotation);
+                fx.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
                 DeleteBlock(new int2(x, z));
             }
 
@@ -303,6 +316,7 @@ public class Stage : MonoBehaviour
 
             Vector3 position = block.GetPosition();
             Destroy(block.gameObject);
+
 
             // あたらしいブロックを用意する
             GameObject obj = Instantiate(_blocknone, position, Quaternion.identity);

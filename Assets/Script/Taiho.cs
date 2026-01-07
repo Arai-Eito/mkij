@@ -87,9 +87,9 @@ public class Taiho : MonoBehaviour
     {
         _number = number;
 
-        if(50 <= _number)
+        if(30 <= _number)
         {
-            _bulletNumber = 50;
+            _bulletNumber = 30;
             _damage = _number / _bulletNumber;
         }
         else

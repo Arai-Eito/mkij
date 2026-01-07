@@ -426,6 +426,8 @@ MonoBehaviour:
   _blocknormal: {fileID: 0}
   _present: {fileID: 316012465294096702, guid: 060278131627f544791c7c689226737e, type: 3}
   stepTime: 0
+  _clearLineEffect: {fileID: 5112403345868107898, guid: 6f34ef0d986e9db4199cf75805f79753, type: 3}
+  _deleteEffect: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
 --- !u!4 &234566202
 Transform:
   m_ObjectHideFlags: 0
@@ -1174,8 +1176,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemManager
   _items:
   - {fileID: 2045987510567089311, guid: 73ff3007f4e99ec4e9a9c2a7846298f2, type: 3}
-  - {fileID: 2045987510567089311, guid: 73ff3007f4e99ec4e9a9c2a7846298f2, type: 3}
-  - {fileID: 2045987510567089311, guid: 73ff3007f4e99ec4e9a9c2a7846298f2, type: 3}
+  - {fileID: 8566234645488059903, guid: d3ed5eac0c4385642b20cfa1d766e967, type: 3}
+  - {fileID: 3011177733858556998, guid: e80de83fa9b84db47bb6abdb5a0e511d, type: 3}
+  - {fileID: 9076119269407764266, guid: c6c12dd41e612e24fa3fbf437ece8ad0, type: 3}
+  - {fileID: 4368823952664111807, guid: 7d3c29bc4a3b81e4e9febaca3f52adb5, type: 3}
+  - {fileID: 962136577924484343, guid: 13b749c9d6ad3f24c8a14f9dd7c2ec7c, type: 3}
+  - {fileID: 9079996459202031421, guid: 78fa5dc42b3f8e845892577c246d4813, type: 3}
+  - {fileID: 8566234645488059903, guid: d3ed5eac0c4385642b20cfa1d766e967, type: 3}
+  - {fileID: 9076119269407764266, guid: c6c12dd41e612e24fa3fbf437ece8ad0, type: 3}
   _animator: {fileID: 731973074}
   _itemlist: {fileID: 1375364059}
 --- !u!95 &731973074
