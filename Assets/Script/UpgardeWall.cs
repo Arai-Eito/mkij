@@ -21,17 +21,17 @@ public class UpgardeWall : MonoBehaviour
     {
         if (!other.TryGetComponent(out Bullet bullet))
             return;
-        if(bullet.GetIsDouble())return;
-        Vector3 baseDir = bullet.GetVelocity().normalized;
-        float speed = bullet.GetSpeed();
-        int damage = bullet.GetDamage();
+//        if(bullet.GetIsDouble())return;
+//        Vector3 baseDir = bullet.GetVelocity().normalized;
+//        float speed = bullet.GetSpeed();
+//        int damage = bullet.GetDamage();
 
         Quaternion leftRot = Quaternion.AngleAxis(-_splitAngle, Vector3.up);
         Quaternion rightRot = Quaternion.AngleAxis(_splitAngle, Vector3.up);
 
         
-        SpawnBullet(bullet.transform.position, leftRot * baseDir, speed, damage);
-        SpawnBullet(bullet.transform.position, rightRot * baseDir, speed, damage);
+ //       SpawnBullet(bullet.transform.position, leftRot * baseDir, speed, damage);
+ //       SpawnBullet(bullet.transform.position, rightRot * baseDir, speed, damage);
 
         Destroy(bullet.gameObject);
     }
@@ -41,7 +41,7 @@ public class UpgardeWall : MonoBehaviour
         GameObject obj = Instantiate(_bulletPrefab, pos, Quaternion.identity);
         Bullet b = obj.GetComponent<Bullet>();
         b.SetParameter(speed, dir, damage);
-        b.SetIsDouble(true);
+//        b.SetIsDouble(true);
     }
     private void Move()
     {

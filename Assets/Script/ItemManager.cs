@@ -44,7 +44,12 @@ public class ItemManager : MonoBehaviour
         for(int i = 0; i < num; i++)
         {
             GameObject obj = Instantiate(_items[Random.Range(0,_items.Count)]);
+            Parts p = obj.GetComponent<Parts>();
+            p.SetLevel(Stage.instance.GetLevel() / 8);
+            
             _itemlist.ItemSet(i,obj);
+
+
         }
 
     }

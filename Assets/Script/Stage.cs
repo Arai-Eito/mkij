@@ -76,29 +76,13 @@ public class Stage : MonoBehaviour
             NextTurn();
         }
     }
-    private void Update()
-    {
-        if (Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            SpawnEnemy(3, 3);
-        }
-        if (Keyboard.current.sKey.wasPressedThisFrame)
-        {
-            Move();
-        }
-
-        if (Keyboard.current.dKey.wasPressedThisFrame)
-        {
-            NextTurn();
-        }
-    }
 
     ////////////////////////////////////////////////////////
     /// TURN
     /// 
     public void NextTurn()
     {
-        _level+=3;
+        _level++;
 
         Move();
 
@@ -353,6 +337,7 @@ public class Stage : MonoBehaviour
     }
     public Taiho GetTaiho() { return _taiho; }
 
+    public int GetLevel() { return _level; }
     ////////////////////////////////////////////////////////
     /// UI BUTTON 等
  

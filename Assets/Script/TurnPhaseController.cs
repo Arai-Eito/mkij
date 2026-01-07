@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.SceneManagement;
 public enum TURN_PHASE
 {
     NONE = 0,
@@ -16,7 +16,7 @@ public class TurnPhaseController : MonoBehaviour
     private TURN_PHASE _phase;
 
     [SerializeField] Taiho _taiho;
-
+    [SerializeField] Animator _animator;
 
 
     private void Start()
@@ -49,10 +49,20 @@ public class TurnPhaseController : MonoBehaviour
                 Stage.instance.NextTurn();
                 _phase = TURN_PHASE.TAIHO_PUZZLE;
 
-                if (_taiho.GetIsDead() == true) _phase = TURN_PHASE.GAMEOVER;
+                if (_taiho.GetIsDead() == true)
+                {
+                    _phase = TURN_PHASE.GAMEOVER;
+                    _animator.SetTrigger("GameOver");
+                }
                 break;
 
             case TURN_PHASE.GAMEOVER:
+               
+                if(Mouse.current.rightButton.wasReleasedThisFrame)
+                {
+                    SceneManager.LoadScene("SampleScene");
+                }
+
                 break;
         }
 
@@ -67,5 +77,10 @@ public class TurnPhaseController : MonoBehaviour
         if (_phase != TURN_PHASE.TAIHO_PUZZLE) return;
 
         ItemManager.instance.ItemReroll();
+    }
+    public void Retry()
+    {
+
+        SceneManager.LoadScene("SampleScene");
     }
 }

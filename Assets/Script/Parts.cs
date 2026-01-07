@@ -32,4 +32,17 @@ public class Parts : MonoBehaviour
         return true;
     }
 
+
+    public void SetLevel(int level)
+    {
+        for(int i = 0; i < _blocks.Length;i++)
+        {
+            int l = level;
+            l += UnityEngine.Random.Range(0, 7);
+
+            _blocks[i].SetNumber(l);
+
+        }
+
+    }
 }
