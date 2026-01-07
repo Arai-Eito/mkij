@@ -9,17 +9,12 @@ public class ItemManager : MonoBehaviour
 
     [SerializeField] List<GameObject> _items;
     
-
-
     [SerializeField] Animator _animator;
     [SerializeField] ItemList _itemlist;
 
     private bool _in = false;
     private int _reroll = 0;
 
-
-
-    //////////////////////////////////////////////////
 
     private void Awake()
     {

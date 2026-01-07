@@ -1,13 +1,6 @@
-using System;
-using TMPro;
-using TMPro.Examples;
 using Unity.Mathematics;
-using Unity.VisualScripting;
-using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 public class Stage : MonoBehaviour
 {
@@ -32,9 +25,6 @@ public class Stage : MonoBehaviour
 
     int _level = 0;
     int _presentCount = 0;
-
-    ////////////////////////////////////////////////////////
-
     private void Awake()
     {
         if(instance == null)
@@ -48,7 +38,6 @@ public class Stage : MonoBehaviour
     }
     private void Start()
     {
-        // 
         Vector3 stageSize = _base.localScale;
         _stageSize.x = (int)stageSize.x;
         _stageSize.y = (int)stageSize.y;
@@ -57,7 +46,6 @@ public class Stage : MonoBehaviour
         // 
         _basePoint = _base.position - stageSize * 0.5f + new Vector3(0.5f, stageSize.y + 0.1f, 0.5f);
 
-        // ブロックオブジェクト設置
         {
             _blocks = new Block[_stageSize.z, _stageSize.x];
 
@@ -345,7 +333,6 @@ public class Stage : MonoBehaviour
         Block fromblock = _blocks[from.y,from.x];
         Block toblock = _blocks[to.y,to.x];
 
-        // 移動
         _blocks[to.y, to.x] = fromblock;
         _blocks[from.y,from.x] = toblock;
 
@@ -364,8 +351,6 @@ public class Stage : MonoBehaviour
     }
     public Taiho GetTaiho() { return _taiho; }
 
-    ////////////////////////////////////////////////////////
-    /// UI BUTTON 等
     public void ItemReroll()
     {
         ItemManager.instance.SetItem();
