@@ -7,6 +7,7 @@ public class CameraCursor : MonoBehaviour
     [SerializeField] RectTransform _cursor;
     [SerializeField] Stage _stage;
 
+    [SerializeField] private TurretRotation _turret;
     private Transform _selectedParts;
     private Vector3 _selectedPartsStartPosition;
     private Vector3 _selectedPartsOffset;
@@ -15,9 +16,7 @@ public class CameraCursor : MonoBehaviour
     {
         Vector2 screenPos = Mouse.current.position.ReadValue();
 
-        // UI CURSOR
         {
-            // Canvasローカル座標に変換
             RectTransform canvasRect = _canvas.GetComponent<RectTransform>();
             Vector2 canvasPos;
 
@@ -46,20 +45,24 @@ public class CameraCursor : MonoBehaviour
 
     private void Update()
     {
-        // DRAG DROP
         {
             Vector2 screenPos = Mouse.current.position.ReadValue();
             Ray ray = Camera.main.ScreenPointToRay(screenPos);
 
-            
-            // CATCH
+
+            int mask = LayerMask.GetMask("CameraRay");
+
+            if (Physics.Raycast(ray, out RaycastHit hit2, Mathf.Infinity, mask))
+            {
+                _turret.LookAtPoint(hit2.point);
+            }
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
 
                 if(_selectedParts == null)
                 {
                     
-                    int mask = LayerMask.GetMask("Parts");
+                     mask = LayerMask.GetMask("Parts");
 
                     if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, mask))
                     {
@@ -75,7 +78,6 @@ public class CameraCursor : MonoBehaviour
                 }
             }
 
-            // DROP
             if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 if(_selectedParts != null)
@@ -83,7 +85,6 @@ public class CameraCursor : MonoBehaviour
 
                     Parts parts = _selectedParts.gameObject.GetComponent<Parts>();
 
-                    // 設置成功したら親だけ消す
                     if (parts.SetBlock(_stage))
                     {
                         int childCount = _selectedParts.childCount;
@@ -104,10 +105,9 @@ public class CameraCursor : MonoBehaviour
                 }
             }
 
-            // DRAG
             if(_selectedParts != null)
             {
-                int mask = LayerMask.GetMask("CameraRay");
+                 mask = LayerMask.GetMask("CameraRay");
 
                 if(Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity, mask))
                 {

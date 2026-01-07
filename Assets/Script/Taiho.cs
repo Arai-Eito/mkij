@@ -5,11 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Taiho : MonoBehaviour
 {
+    [SerializeField] private Transform _startPos;
     public GameObject _bulletPrefab;
     [SerializeField] int _number = 0;
     [SerializeField] int _bulletNumber = 50;
     [SerializeField] TMP_Text _text;
-
+    [SerializeField] GameObject _shootEffect;
     bool _shotting = false;
     int _damage = 0;
 
@@ -32,7 +33,7 @@ public class Taiho : MonoBehaviour
 
     IEnumerator _Shot()
     {
-
+        Instantiate(_shootEffect, _startPos.position, _startPos.rotation);
         Vector2 screenPos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(screenPos);
 

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Bullet : MonoBehaviour
     [SerializeField] Vector3 _velocity;
     [SerializeField] float _size;
 
+    [SerializeField] GameObject _hitEffectPrefab;
+    [SerializeField] GameObject _destroyEffectPrefab;
     int _damage;
     private static int _count = 0;
     private static int _maxCount = 100;
@@ -28,8 +31,8 @@ public class Bullet : MonoBehaviour
     }
     private void OnDestroy()
     {
-        Debug.Log(_count);
         if(isInit) _count--;
+        Instantiate(_destroyEffectPrefab, transform.position, transform.rotation);
     }
     private void FixedUpdate()
     {
@@ -37,6 +40,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
+        SpawnEffect();
         ContactPoint contact = collision.contacts[0];
 
         _velocity = Vector3.Reflect(_velocity, contact.normal);
@@ -53,10 +57,16 @@ public class Bullet : MonoBehaviour
             {
                 Stage.instance.DeleteBlock(block.GetIndex());
             }
-        }
+;        }
 
     }
 
+    void SpawnEffect()
+    {
+        if (_hitEffectPrefab == null) return;
+
+        GameObject fx = Instantiate(_hitEffectPrefab, transform.position, transform.rotation);
+    }
 
     public void SetParameter(float speed , Vector3 velocity,int daamge)
     {

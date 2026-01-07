@@ -25,9 +25,11 @@ public class Stage : MonoBehaviour
 
     int _level = 0;
     int _presentCount = 0;
+    [SerializeField] private float stepTime = 5f;
+    private float currentTime;
     private void Awake()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -85,15 +87,11 @@ public class Stage : MonoBehaviour
             Move();
         }
 
-        if(Keyboard.current.dKey.wasPressedThisFrame)
+        if (Keyboard.current.dKey.wasPressedThisFrame)
         {
             NextTurn();
         }
     }
-
-    ////////////////////////////////////////////////////////
-    /// TURN
-    /// 
     private void NextTurn()
     {
         _level++;
