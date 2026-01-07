@@ -1,8 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.Universal.Internal;
-using Unity.VisualScripting;
 
 public class CameraCursor : MonoBehaviour
 {
