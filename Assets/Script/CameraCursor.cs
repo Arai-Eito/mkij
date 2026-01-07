@@ -87,6 +87,9 @@ public class CameraCursor : MonoBehaviour
 
                     if (parts.SetBlock(_stage))
                     {
+                        // アイテムマネージャーのリストをクリアする
+                        ItemManager.instance.ItemClear();
+
                         int childCount = _selectedParts.childCount;
                         for (int i = 0; i < childCount; i++)
                         {

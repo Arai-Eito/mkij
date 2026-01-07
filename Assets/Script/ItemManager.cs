@@ -12,7 +12,6 @@ public class ItemManager : MonoBehaviour
     [SerializeField] Animator _animator;
     [SerializeField] ItemList _itemlist;
 
-    private bool _in = false;
     private int _reroll = 0;
 
 
@@ -30,21 +29,15 @@ public class ItemManager : MonoBehaviour
 
     //////////////////////////////////////////////////
 
-    public void ItemListIn()
+    public void ItemReroll()
     {
-        _in = true;
-        _animator.SetBool("In", _in);
-    }
-    public void ItemListOut()
-    {
-        _in = false;
-        _animator.SetBool("In", _in);
+        if (_reroll <= 0) return;
+        _reroll--;
+
+        _animator.SetTrigger("Reroll");
     }
     public void SetItem()
     {
-        if (_reroll <= 0) return;
-
-
         int num = _itemlist.GetPositionMax();
         _itemlist.ItemClear();
 
@@ -54,9 +47,16 @@ public class ItemManager : MonoBehaviour
             _itemlist.ItemSet(i,obj);
         }
 
-        // 
-        ItemListIn();
+    }
+    public void ItemClear()
+    {
+        _animator.SetTrigger("ItemClear");
+    }
+    
+    public void ItemListItemClear()
+    {
+        _itemlist.ItemClear(); 
     }
     public void AddReroll(int r) { _reroll += r; }
-
+    public bool GetCanReroll() => 0 < _reroll;
 }

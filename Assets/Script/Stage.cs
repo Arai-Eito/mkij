@@ -92,21 +92,25 @@ public class Stage : MonoBehaviour
             NextTurn();
         }
     }
-    private void NextTurn()
+
+    ////////////////////////////////////////////////////////
+    /// TURN
+    /// 
+    public void NextTurn()
     {
-        _level++;
+        _level+=3;
 
         Move();
 
 
-        // ƒvƒŒƒ[ƒ“ƒg
+        // ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆ
         if(_presentCount <= 0)
         {
             _presentCount = UnityEngine.Random.Range(4, 7);
             SpawnPresent(_level, 1);
         }
         _presentCount--;
-        // 5% ‚ð 5‚©‚¢’Š‘I
+        // 5% ã‚’ 5ã‹ã„æŠ½é¸
         for (int i = 0; i < 5; i ++)
         {
             if( UnityEngine.Random.Range(0, 33) == 0)
@@ -115,11 +119,11 @@ public class Stage : MonoBehaviour
             }
         }
 
-        // “G‚ðƒXƒ|[ƒ“
+        // æ•µã‚’ã‚¹ãƒãƒ¼ãƒ³
         int num = UnityEngine.Random.Range(0, _stageSize.x);
         SpawnEnemy(_level, num);
 
-        // ‘Ì—Í‚O
+        // ä½“åŠ›ï¼
         for (int z = 0; z < _stageSize.z; z++)
         {
             for (int x = 0; x < _stageSize.x; x++)
@@ -147,8 +151,8 @@ public class Stage : MonoBehaviour
             {
                 Block block = _blocks[z, x];
 
-                // clear ‚µ‚È‚¢
-                if (block.GetBlockType() == BLOCK_TYPE.NONE)
+                // clear ã—ãªã„
+                if (block.GetBlockType() != BLOCK_TYPE.NOMOVE)
                 {
                     clear = false;
                     break;
@@ -165,7 +169,7 @@ public class Stage : MonoBehaviour
                 DeleteBlock(new int2(x, z));
             }
 
-            // ‘å–C‚É’Ç‰Á‚·‚é
+            // å¤§ç ²ã«è¿½åŠ ã™ã‚‹
             _taiho.SetNumber(_taiho.GetNumber() + totalNumber);
             _taiho.UpdateNumberText();
         }
@@ -204,11 +208,11 @@ public class Stage : MonoBehaviour
             {
                 int randomX = UnityEngine.Random.Range(0, _stageSize.x);
 
-                // sæŠm”F
+                // è¡Œå…ˆç¢ºèª
                 Block block = _blocks[_stageSize.z - 1, randomX];
                 if (block.GetBlockType() != BLOCK_TYPE.NONE) continue;
 
-                // ƒXƒ|[ƒ“
+                // ã‚¹ãƒãƒ¼ãƒ³
                 Vector3 position = _basePoint + new Vector3(randomX, 0.0f, _stageSize.z - 1);
 
                 GameObject obj = Instantiate(_enemy, position, quaternion.identity);
@@ -217,7 +221,7 @@ public class Stage : MonoBehaviour
                 spawnBlock.MoveTo(position);
                 spawnBlock.SetIndex(new int2(randomX,_stageSize.z - 1));
 
-                // Ý’u
+                // è¨­ç½®
                 Destroy(_blocks[_stageSize.z - 1, randomX].gameObject);
                 _blocks[_stageSize.z - 1, randomX] = spawnBlock;
 
@@ -240,11 +244,11 @@ public class Stage : MonoBehaviour
             {
                 int randomX = UnityEngine.Random.Range(0, _stageSize.x);
 
-                // sæŠm”F
+                // è¡Œå…ˆç¢ºèª
                 Block block = _blocks[_stageSize.z - 1, randomX];
                 if (block.GetBlockType() != BLOCK_TYPE.NONE) continue;
 
-                // ƒXƒ|[ƒ“
+                // ã‚¹ãƒãƒ¼ãƒ³
                 Vector3 position = _basePoint + new Vector3(randomX, 0.0f, _stageSize.z - 1);
 
                 GameObject obj = Instantiate(_present, position, quaternion.identity);
@@ -253,7 +257,7 @@ public class Stage : MonoBehaviour
                 spawnBlock.MoveTo(position);
                 spawnBlock.SetIndex(new int2(randomX,_stageSize.z - 1));
 
-                // Ý’u
+                // è¨­ç½®
                 Destroy(_blocks[_stageSize.z - 1, randomX].gameObject);
                 _blocks[_stageSize.z - 1, randomX] = spawnBlock;
 
@@ -316,8 +320,8 @@ public class Stage : MonoBehaviour
             Vector3 position = block.GetPosition();
             Destroy(block.gameObject);
 
-            // ‚ ‚½‚ç‚µ‚¢ƒuƒƒbƒN‚ð—pˆÓ‚·‚é
-            GameObject obj = Instantiate(_blocknone, position + new Vector3(-10.0f,0.0f, 0.0f), Quaternion.identity);
+            // ã‚ãŸã‚‰ã—ã„ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç”¨æ„ã™ã‚‹
+            GameObject obj = Instantiate(_blocknone, position, Quaternion.identity);
             block = obj.GetComponent<Block>();
             block.MoveTo(position);
             block.SetIndex(index);
@@ -349,9 +353,8 @@ public class Stage : MonoBehaviour
     }
     public Taiho GetTaiho() { return _taiho; }
 
-    public void ItemReroll()
-    {
-        ItemManager.instance.SetItem();
-    }
+    ////////////////////////////////////////////////////////
+    /// UI BUTTON ç­‰
+ 
     
 }

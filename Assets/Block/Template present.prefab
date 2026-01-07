@@ -100,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1422908200177925549}
   - component: {fileID: 3524585723653130876}
-  - component: {fileID: 1705632460893189319}
+  - component: {fileID: 2953472129657113232}
   m_Layer: 0
   m_Name: Template present
   m_TagString: Untagged
@@ -146,7 +146,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &1705632460893189319
+--- !u!114 &2953472129657113232
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -155,9 +155,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 316012465294096702}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c61c6023e31f9774ea72096e4893c12e, type: 3}
+  m_Script: {fileID: 11500000, guid: a35225af78fa9b34a8773fbbd80f64d3, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BlockMove
+  m_EditorClassIdentifier: Assembly-CSharp::BlockPresent
   _type: 1
   _text: {fileID: 645175483908114227}
 --- !u!1 &491968646077115847
