@@ -25,7 +25,6 @@ public class Block2 : MonoBehaviour
     private Vector3 _position;
 
 
-    ////////////////////////////////////////
 
     private void Start()
     {

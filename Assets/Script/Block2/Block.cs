@@ -26,15 +26,12 @@ public class Block : MonoBehaviour
     private bool _moving;
 
 
-    //////////////////////////////////////////////////
-
     private void Start()
     {
         UpdateNumberText();
     }
     private void FixedUpdate()
     {
-        // moving
         if(_moving)
         {
             Vector3 direction = _position - transform.position;
@@ -52,18 +49,13 @@ public class Block : MonoBehaviour
             }
         }
     }
-
-    //////////////////////////////////////////////////
-
     //列で消されたとき
     public virtual void ClearLine() { }
     // 壊れたとき
     public virtual void Broken() { }
     // 移動の仕方
     public virtual void Move() { }
-    // 移動の遷移
     public void MoveTo(Vector3 position) { _moving = true; _position = position; }
-    // テキスト値の更新
     public void UpdateNumberText()
     {
         if (_type != BLOCK_TYPE.NONE)
@@ -72,16 +64,11 @@ public class Block : MonoBehaviour
         }
     }
 
-    //////////////////////////////////////////////////
-
     public BLOCK_TYPE GetBlockType() {  return _type; }
     public int2 GetIndex() {  return _index; }
     public void SetIndex(int2 index) { _index = index; }
     public int GetNumber() { return _number; }
     public void SetNumber(int number) {  _number = number; UpdateNumberText(); }
     public Vector3 GetPosition() { return _position; }
-
-    //////////////////////////////////////////////////
-
 
 }

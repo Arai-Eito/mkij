@@ -1,77 +1,71 @@
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
-
+using static UnityEditor.PlayerSettings;
+[RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
 {
     [SerializeField] float _speed;
+    [SerializeField] private float _destroyTime;
 
     [SerializeField] Vector3 _velocity;
     [SerializeField] float _size;
 
+    [SerializeField] GameObject _hitEffectPrefab;
+    [SerializeField] GameObject _destroyEffectPrefab;
     int _damage;
+    private static int _count = 0;
+    private static int _maxCount = 100;
+    private bool isInit = false;
+    Rigidbody _rb;
+    bool isDoubled;
 
-
+    private void Awake()
+    {
+        _count++;
+        if (_count >= _maxCount) Destroy(gameObject);
+        isInit = true;  
+        _rb = GetComponent<Rigidbody>();
+        _rb.useGravity = false;
+        _rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        Destroy(gameObject, _destroyTime);
+    }
+    private void OnDestroy()
+    {
+        if(isInit) _count--;
+        Instantiate(_destroyEffectPrefab, transform.position, transform.rotation);
+    }
     private void FixedUpdate()
     {
-        transform.position += (Vector3)_velocity * _speed * Time.deltaTime;
+        _rb.linearVelocity = _velocity.normalized * _speed;
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        SpawnEffect();
+        ContactPoint contact = collision.contacts[0];
 
-        Vector3 vel = _velocity;
-        vel.y = 0.0f;
-        vel = vel.normalized;
+        _velocity = Vector3.Reflect(_velocity, contact.normal);
+        _velocity.y = 0.0f;
 
-        if (Physics.BoxCast(
-            transform.position,
-            new Vector3(0.2f,0.2f,0.2f),
-            vel,
-            out RaycastHit hit,
-            Quaternion.identity,
-            _size))
+        Block block = collision.collider.GetComponent<Block>();
+        if (block != null)
         {
-            Transform hitTrans = hit.collider.transform;
+            int hp = block.GetNumber() - _damage;
+            block.SetNumber(hp);
+            block.UpdateNumberText();
 
-            Vector3 direction = transform.position - hitTrans.position ;
-            direction.y = 0.0f;
-            direction = direction.normalized;
-
-            Vector3 axis;
-            axis = hitTrans.right;
-            axis.y = 0.0f;
-            axis = axis.normalized;
-            float outHorizontal = Vector3.Dot(direction,axis);
-            axis = hitTrans.forward;
-            axis.y = 0.0f;
-            axis = axis.normalized;
-            float outVertical = Vector3.Dot(direction, axis) ;
-
-            // èÇé≤ÇÃï˚Ç™ãﬂÇ¢
-            if(Mathf.Abs(outHorizontal) < Mathf.Abs(outVertical))
+            if (hp <= 0 && Stage.instance != null)
             {
-                _velocity.z = Mathf.Sign(direction.z) * Mathf.Abs(_velocity.z);
+                Stage.instance.DeleteBlock(block.GetIndex());
             }
-            // â°é≤ÇÃï˚Ç™ãﬂÇ¢
-            else
-            {
-                _velocity.x = Mathf.Sign(direction.x) * Mathf.Abs(_velocity.x);
-            }
+;        }
 
-            // É_ÉÅÅ[ÉW
+    }
 
-            Block b = hit.collider.gameObject.GetComponent<Block>();
-            if (b != null)
-            {
-                int health = b.GetNumber() - _damage;
-                b.SetNumber(health);
-                b.UpdateNumberText();
+    void SpawnEffect()
+    {
+        if (_hitEffectPrefab == null) return;
 
-                if (health <= 0)
-                {
-                    Stage.instance.DeleteBlock(b.GetIndex());
-                }
-            }
-        }
-
-
-        if (transform.position.z < -5) Destroy(gameObject);
+        GameObject fx = Instantiate(_hitEffectPrefab, transform.position, transform.rotation);
     }
 
     public void SetParameter(float speed , Vector3 velocity,int daamge)
@@ -81,6 +75,10 @@ public class Bullet : MonoBehaviour
         _damage = daamge;
     }
 
+    public void SetDamage(int damage)
+    {
+        _damage = damage;
+    }
     private void OnDrawGizmos()
     {
         Vector3 vel = _velocity;
@@ -89,5 +87,27 @@ public class Bullet : MonoBehaviour
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(transform.position, vel * _size);
+    }
+    public Vector3 GetVelocity()
+    {
+        return _rb.linearVelocity;
+    }
+    public float GetSpeed()
+    {
+        return _speed;
+    }
+
+    public int GetDamage()
+    {
+        return _damage;
+    }
+
+    public bool GetIsDouble()
+    {
+        return isDoubled;
+    }
+    public void SetIsDouble(bool b)
+    {
+        isDoubled = b;
     }
 }
