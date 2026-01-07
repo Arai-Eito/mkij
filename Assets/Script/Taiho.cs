@@ -2,6 +2,8 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using System.Linq;
 
 public class Taiho : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class Taiho : MonoBehaviour
 
     bool _shotting = false;
     int _damage = 0;
+    List<GameObject> _bullets = new List<GameObject>();
+
 
     private void Start()
     {
@@ -19,15 +23,27 @@ public class Taiho : MonoBehaviour
         UpdateNumberText();
     }
 
-
-    private void Update()
-    
+    private void FixedUpdate()
     {
-        if (Mouse.current.rightButton.wasReleasedThisFrame)
+
+        if(_bullets.Count <= 0)
         {
-            _shotting = true;
-            StartCoroutine(_Shot());
+            _shotting = false;
         }
+        else
+        {
+            if (_bullets[0] == null) _bullets.RemoveAt(0);
+        }
+    }
+
+
+    public void Shot()
+    {
+        if (_shotting) return;
+
+        _shotting = true;
+        StartCoroutine(_Shot());
+        
     }
 
     IEnumerator _Shot()
@@ -47,6 +63,8 @@ public class Taiho : MonoBehaviour
             {
                 GameObject obj = Instantiate(_bulletPrefab);
                 obj.transform.position = transform.position;
+                Destroy(obj, 10.0f);
+                _bullets.Add(obj);
 
                 Bullet b = obj.GetComponent<Bullet>();
                 b.SetParameter(8, direction,_damage);
@@ -56,7 +74,7 @@ public class Taiho : MonoBehaviour
             }
         }
 
-        _shotting = false;
+
         yield break;
     }
 
@@ -85,4 +103,7 @@ public class Taiho : MonoBehaviour
     {
         _text.text = _number.ToString();        
     }
+
+    public bool GetShotting() { return  _shotting; }
+    public bool GetIsDead() { return _number <= 0; }
 }

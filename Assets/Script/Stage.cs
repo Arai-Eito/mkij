@@ -94,9 +94,9 @@ public class Stage : MonoBehaviour
     ////////////////////////////////////////////////////////
     /// TURN
     /// 
-    private void NextTurn()
+    public void NextTurn()
     {
-        _level++;
+        _level+=3;
 
         Move();
 
@@ -150,7 +150,7 @@ public class Stage : MonoBehaviour
                 Block block = _blocks[z, x];
 
                 // clear しない
-                if (block.GetBlockType() == BLOCK_TYPE.NONE)
+                if (block.GetBlockType() != BLOCK_TYPE.NOMOVE)
                 {
                     clear = false;
                     break;
@@ -319,7 +319,7 @@ public class Stage : MonoBehaviour
             Destroy(block.gameObject);
 
             // あたらしいブロックを用意する
-            GameObject obj = Instantiate(_blocknone, position + new Vector3(-10.0f,0.0f, 0.0f), Quaternion.identity);
+            GameObject obj = Instantiate(_blocknone, position, Quaternion.identity);
             block = obj.GetComponent<Block>();
             block.MoveTo(position);
             block.SetIndex(index);
@@ -351,9 +351,15 @@ public class Stage : MonoBehaviour
     }
     public Taiho GetTaiho() { return _taiho; }
 
+<<<<<<< Updated upstream
     public void ItemReroll()
     {
         ItemManager.instance.SetItem();
     }
+=======
+    ////////////////////////////////////////////////////////
+    /// UI BUTTON 等
+ 
+>>>>>>> Stashed changes
     
 }

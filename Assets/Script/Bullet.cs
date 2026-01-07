@@ -55,6 +55,11 @@ public class Bullet : MonoBehaviour
             }
         }
 
+<<<<<<< Updated upstream
+=======
+
+        if (transform.position.z < 0) Destroy(gameObject);
+>>>>>>> Stashed changes
     }
 
 
