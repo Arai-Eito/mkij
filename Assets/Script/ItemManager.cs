@@ -64,4 +64,5 @@ public class ItemManager : MonoBehaviour
     }
     public void AddReroll(int r) { _reroll += r; }
     public bool GetCanReroll() => 0 < _reroll;
+    public int GetRerollCount() { return _reroll; }
 }
