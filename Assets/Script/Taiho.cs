@@ -7,11 +7,14 @@ using System.Linq;
 
 public class Taiho : MonoBehaviour
 {
+    private AudioSource _audioSource;
+    [SerializeField] AudioClip _shootSound;
+    [SerializeField] private Transform _startPos;
     public GameObject _bulletPrefab;
     [SerializeField] int _number = 0;
     [SerializeField] int _bulletNumber = 50;
     [SerializeField] TMP_Text _text;
-
+    [SerializeField] GameObject _shootEffect;
     bool _shotting = false;
     int _damage = 0;
     List<GameObject> _bullets = new List<GameObject>();
@@ -19,6 +22,7 @@ public class Taiho : MonoBehaviour
 
     private void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
         SetNumber(_bulletNumber);
         UpdateNumberText();
     }
@@ -48,7 +52,7 @@ public class Taiho : MonoBehaviour
 
     IEnumerator _Shot()
     {
-
+        Instantiate(_shootEffect, _startPos.position, _startPos.rotation);
         Vector2 screenPos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(screenPos);
 
@@ -68,7 +72,7 @@ public class Taiho : MonoBehaviour
 
                 Bullet b = obj.GetComponent<Bullet>();
                 b.SetParameter(8, direction,_damage);
-
+                _audioSource.PlayOneShot(_shootSound);
 
                 yield return new WaitForSeconds(0.1f);
             }
