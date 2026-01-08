@@ -38,7 +38,7 @@ public class Parts : MonoBehaviour
         for(int i = 0; i < _blocks.Length;i++)
         {
             int l = level;
-            l += UnityEngine.Random.Range(0, 7);
+            l += UnityEngine.Random.Range(0, 5);
 
             _blocks[i].SetNumber(l);
 

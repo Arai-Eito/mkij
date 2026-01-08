@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -25,6 +26,9 @@ public class Stage : MonoBehaviour
     Block[,] _blocks;
 
     int _level = 0;
+    int _killPosition = 0;
+    int _killPositionPlusBorder = 7;
+    int _killPositionMinusBorder = 4;
     int _presentCount = 0;
     [SerializeField] private float stepTime = 5f;
     private float currentTime;
@@ -90,8 +94,9 @@ public class Stage : MonoBehaviour
     /// 
     public void NextTurn()
     {
-        _level+=2;
-
+        int lncrease = (int)(_killPosition * 0.2f) ;
+        _level+= 1 + lncrease;
+        Debug.Log("level "+_level+"   lncrease "+ (1 + lncrease) + "   killposition "+_killPosition );
         Move();
 
 
@@ -160,8 +165,7 @@ public class Stage : MonoBehaviour
             {
                 Block block = GetBlock(new int2(x, z));
                 Vector3 position = block.GetPosition();
-                GameObject fx = Instantiate(_clearLineEffect, position, transform.rotation);
-                fx.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                GameObject fx = Instantiate(_clearLineEffect, position + Vector3.up * 1.0f, transform.rotation);
 
                 DeleteBlock(new int2(x, z));
             }
@@ -313,6 +317,20 @@ public class Stage : MonoBehaviour
         {
             Block block = _blocks[index.y, index.x];
             block.Broken();
+
+            // killpositon 
+            if(block.GetBlockType() == BLOCK_TYPE.MOVE)
+            {
+                if(_killPositionPlusBorder <= index.y)
+                {
+                    _killPosition++;
+                }
+                else if(index.y <= _killPositionMinusBorder)
+                {
+                    _killPosition--;
+                }
+            }
+
 
             Vector3 position = block.GetPosition();
             Destroy(block.gameObject);
