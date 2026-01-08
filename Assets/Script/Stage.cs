@@ -1,11 +1,6 @@
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.Rendering.DebugUI;
 
 public class Stage : MonoBehaviour
 {
