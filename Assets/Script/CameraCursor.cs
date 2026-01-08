@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class CameraCursor : MonoBehaviour
 {
+    [SerializeField] private TrajectoryPreview _trajectory;
     [SerializeField] Canvas _canvas;
     [SerializeField] RectTransform _cursor;
     [SerializeField] Stage _stage;
@@ -12,6 +13,10 @@ public class CameraCursor : MonoBehaviour
     private Vector3 _selectedPartsStartPosition;
     private Vector3 _selectedPartsOffset;
 
+    private void OnValidate()
+    {
+        _trajectory ??= FindAnyObjectByType<TrajectoryPreview>();
+    }
     private void FixedUpdate()
     {
         Vector2 screenPos = Mouse.current.position.ReadValue();
@@ -38,6 +43,7 @@ public class CameraCursor : MonoBehaviour
                 1 << LayerMask.GetMask("CameraRay")))
             {
                 _stage.GetIndex(hit.point);
+                _trajectory.Draw(hit.point);
             }
         }
 
