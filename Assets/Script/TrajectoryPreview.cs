@@ -2,15 +2,27 @@
 
 public class TrajectoryPreview : MonoBehaviour
 {
-    [SerializeField] private LineRenderer _line;
-    [SerializeField] private float _maxDistance = 20f;
-    [SerializeField] private LayerMask _collisionLayer;
-    [SerializeField] private GameObject _endLineEffect;
-    [SerializeField] Vector3 _halfExtents = new Vector3(0.2f, 0.2f, 0.2f);
-    [SerializeField] float _skin = 0.01f; 
-    public void Draw( Vector3 direction)
+    [SerializeField] LineRenderer _line;
+    [SerializeField] float _maxDistance = 20f;
+    [SerializeField] float _radius = 0.25f;
+    [SerializeField] LayerMask _collisionLayer;
+    [SerializeField] Transform _endLineEffect;
+
+    private void Awake()
     {
-        if (direction.sqrMagnitude < 0.0001f) { Clear(); return; }
+        if (_line == null)
+            _line = GetComponent<LineRenderer>();
+
+        _line.positionCount = 3;
+    }
+
+    public void Draw(Vector3 direction)
+    {
+        if (direction.sqrMagnitude < 0.0001f)
+        {
+            Clear();
+            return;
+        }
 
         Vector3 startPos = transform.position;
 
@@ -19,31 +31,50 @@ public class TrajectoryPreview : MonoBehaviour
 
         _line.SetPosition(0, startPos);
 
-        // 1-й BoxCast
-        if (Physics.BoxCast(startPos, _halfExtents, direction, out RaycastHit hit1,
-                Quaternion.identity, _maxDistance, _collisionLayer))
+        if (Physics.SphereCast(
+            startPos,
+            _radius,
+            direction,
+            out RaycastHit hit1,
+            _maxDistance,
+            _collisionLayer))
         {
-            Vector3 p1 = hit1.point;
+            Vector3 p1 = hit1.point- direction* _radius;
             if (p1.z < 0) p1.z = 0;
             _line.SetPosition(1, p1);
 
-            // ✅ Считаем отскок ТОЧНО как в Bullet (по X или Z)
-            Vector3 bouncedDir = CalcGridBounceDir(direction, hit1);
+            Vector3 normal = hit1.normal;
+            normal.y = 0f;
+            normal.Normalize();
 
-            // старт 2-го каста чуть вперед по направлению отскока
-            Vector3 bounceStart = hit1.point + bouncedDir * _skin;
+            Vector3 reflectDir = Vector3.Reflect(direction, hit1.normal);
+            reflectDir.y = 0f;
+            reflectDir.Normalize();
 
-            // 2-й BoxCast
-            if (Physics.BoxCast(bounceStart, _halfExtents, bouncedDir, out RaycastHit hit2,
-                    Quaternion.identity, _maxDistance, _collisionLayer))
+            Vector3 bounceStart = p1 + reflectDir * 0.01f;
+
+            if (Physics.SphereCast(
+                bounceStart,
+                _radius,
+                reflectDir,
+                out RaycastHit hit2,
+                _maxDistance,
+                _collisionLayer))
             {
                 Vector3 p2 = hit2.point;
                 if (p2.z < 0) p2.z = 0;
+
+                float backOffset = 0.15f;
+                p2 -= reflectDir * backOffset;
+
                 _line.SetPosition(2, p2);
+
+                if (_endLineEffect != null)
+                    _endLineEffect.position = p2;
             }
             else
             {
-                _line.SetPosition(2, bounceStart + bouncedDir * _maxDistance);
+                _line.SetPosition(2, bounceStart + reflectDir * _maxDistance);
             }
         }
         else
@@ -53,37 +84,11 @@ public class TrajectoryPreview : MonoBehaviour
             _line.SetPosition(2, end);
         }
     }
-    Vector3 CalcGridBounceDir(Vector3 inDir, RaycastHit hit)
-    {
-        Transform hitTrans = hit.collider.transform;
 
-        // direction = bulletPos - hitPos (как у тебя)
-        Vector3 direction = hit.point - hitTrans.position;
-        direction.y = 0f;
-        direction.Normalize();
-
-        Vector3 axisR = hitTrans.right; axisR.y = 0f; axisR.Normalize();
-        float outHorizontal = Vector3.Dot(direction, axisR);
-
-        Vector3 axisF = hitTrans.forward; axisF.y = 0f; axisF.Normalize();
-        float outVertical = Vector3.Dot(direction, axisF);
-
-        Vector3 outDir = inDir;
-
-        if (Mathf.Abs(outHorizontal) < Mathf.Abs(outVertical))
-        {
-            outDir.z = Mathf.Sign(direction.z) * Mathf.Abs(outDir.z);
-        }
-        else
-        {
-            outDir.x = Mathf.Sign(direction.x) * Mathf.Abs(outDir.x);
-        }
-
-        outDir.y = 0f;
-        return outDir.normalized;
-    }
     public void Clear()
     {
         _line.positionCount = 0;
+        if (_endLineEffect != null)
+            _endLineEffect.gameObject.SetActive(false);
     }
 }

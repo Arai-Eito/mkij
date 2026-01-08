@@ -729,11 +729,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!1 &369181552 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1590415177872986601, guid: acdb90624a404aa438447006f1026065, type: 3}
-  m_PrefabInstance: {fileID: 1530268010}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &369181553 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2275721571885089005, guid: acdb90624a404aa438447006f1026065, type: 3}
@@ -2058,7 +2053,7 @@ Transform:
   m_GameObject: {fileID: 1125701493}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071069, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: -0.01495, z: 0.02085}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2340,11 +2335,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9980e4e59f9ced54790b24c1ab964a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraCursor
-  _trajectory: {fileID: 1423471612}
+  _turret: {fileID: 1097569342}
   _canvas: {fileID: 142648297}
   _cursor: {fileID: 525642528}
   _stage: {fileID: 234566201}
-  _turret: {fileID: 1097569342}
 --- !u!4 &1325326166
 Transform:
   m_ObjectHideFlags: 0
@@ -2526,6 +2520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e353bc49f510d4a9142d4f8e83d421, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Taiho
+  _cursor: {fileID: 1325326165}
   _shootSound: {fileID: 8300000, guid: 4368d81182eb6e14f8e17f3c2e1b91d8, type: 3}
   _startPos: {fileID: 1125701494}
   _bulletPrefab: {fileID: 6569439159572230561, guid: 93a9efc52ce2a0846b41eb16bee9b7c0, type: 3}
@@ -2644,10 +2639,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrajectoryPreview
   _line: {fileID: 1461169914}
   _maxDistance: 20
+  _radius: 0.25
   _collisionLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
-  _endLineEffect: {fileID: 369181552}
+    m_Bits: 30775
+  _endLineEffect: {fileID: 369181553}
 --- !u!4 &1461169913 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8783613104737551003, guid: 0e2dc313081010d47a4ce5a593486109, type: 3}
@@ -3000,7 +2996,7 @@ GameObject:
   - component: {fileID: 1560556497}
   - component: {fileID: 1560556496}
   - component: {fileID: 1560556495}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: CAMERA_RAY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3168,7 +3164,6 @@ GameObject:
   - component: {fileID: 1592727944}
   - component: {fileID: 1592727947}
   - component: {fileID: 1592727946}
-  - component: {fileID: 1592727948}
   m_Layer: 0
   m_Name: Dodai
   m_TagString: Untagged
@@ -3248,27 +3243,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592727943}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &1592727948
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592727943}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.047371265}
-  m_Center: {x: 0, y: 0, z: -0.47631297}
 --- !u!1 &1596830480
 GameObject:
   m_ObjectHideFlags: 0
