@@ -1,13 +1,11 @@
-using System.Collections.Generic;
-using System.Numerics;
+
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager instance;
 
-    [SerializeField] List<GameObject> _items;
+    [SerializeField] GameObject _item;
     
     [SerializeField] Animator _animator;
     [SerializeField] ItemList _itemlist;
@@ -43,9 +41,10 @@ public class ItemManager : MonoBehaviour
 
         for(int i = 0; i < num; i++)
         {
-            GameObject obj = Instantiate(_items[Random.Range(0,_items.Count)]);
-            Parts p = obj.GetComponent<Parts>();
-            p.SetLevel(Stage.instance.GetLevel() / 8);
+            GameObject obj = Instantiate(_item);
+            PartsAuto p = obj.GetComponent<PartsAuto>();
+            p.CreateParts(Random.Range(1,5));
+            p.SetLevel(1);
             
             _itemlist.ItemSet(i,obj);
 

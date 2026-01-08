@@ -68,9 +68,9 @@ public class Bullet : MonoBehaviour
             }
 
             // ダメージ
-
+            // NOMOVEにはダメージを与えない
             Block b = hit.collider.gameObject.GetComponent<Block>();
-            if (b != null)
+            if (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE)
             {
                 int health = b.GetNumber() - _damage;
                 b.SetNumber(health);
