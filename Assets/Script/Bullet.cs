@@ -72,14 +72,25 @@ public class Bullet : MonoBehaviour
             Block b = hit.collider.gameObject.GetComponent<Block>();
             if (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE)
             {
-                int health = b.GetNumber() - _damage;
-                b.SetNumber(health);
-                b.UpdateNumberText();
+                int damage = _damage;
+                int health = b.GetNumber() - damage;
+
 
                 if (health <= 0)
                 {
+                    damage = health;
                     Stage.instance.DeleteBlock(b.GetIndex());
                 }
+                else
+                {
+                    b.SetNumber(health);
+                    b.UpdateNumberText();
+                    b.Damaged(); // ダメージエフェクト
+                }
+
+
+                // スコア追加
+                ScoreManager.instance.AddScore(damage);
             }
         }
 

@@ -2,8 +2,17 @@ using UnityEngine;
 
 public class BlockEnemy : BlockMove
 {
+    [Header("膨らむアニメーションクラス")]
+    [SerializeField] BlockPuffer puffer;
+
     public override void Broken()
     {
-        ScoreManager.instance.AddScore(1);
+    }
+
+    public override void Damaged()
+    {
+        // 膨らむアニメーション
+        if (puffer != null)
+            puffer.Play();
     }
 }
