@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Stage : MonoBehaviour
 {
@@ -37,6 +40,9 @@ public class Stage : MonoBehaviour
 
     [SerializeField] GameObject _clearLineEffect;
     [SerializeField] GameObject _deleteEffect;
+
+    [Header("消したときの光るオーブ")]
+    [SerializeField] private LineClearOrbAnimator _lineClearOrbAnimator;
 
 
     private void Awake()
@@ -161,18 +167,45 @@ public class Stage : MonoBehaviour
 
             if (!clear) continue;
 
+            // 各ブロックの「位置＋値」を集める（消す前）
+            var items = new List<LineClearOrbAnimator.OrbItem>(_stageSize.x);
+
             for (int x = 0; x < _stageSize.x; x++)
             {
                 Block block = GetBlock(new int2(x, z));
                 Vector3 position = block.GetPosition();
+
+                // オーブ用に登録
+                items.Add(new LineClearOrbAnimator.OrbItem(position, block.GetNumber()));
+                
                 GameObject fx = Instantiate(_clearLineEffect, position + Vector3.up * 1.0f, transform.rotation);
+                fx.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
 
                 DeleteBlock(new int2(x, z));
             }
 
-            // 大砲に追加する
-            _taiho.SetNumber(_taiho.GetNumber() + totalNumber);
-            _taiho.UpdateNumberText();
+            // 合計を大砲に加算
+            if (_lineClearOrbAnimator != null)
+            {
+                // 到着するたびに加算
+                _lineClearOrbAnimator.Play(
+                    items,
+                    _taiho.transform,
+                    (v) =>
+                    {
+                        _taiho.SetNumber(_taiho.GetNumber() + v);
+                        _taiho.UpdateNumberText();
+                    }
+                );
+            }
+            else
+            {
+                // 演出無しなら即時合計加算
+                
+                _taiho.SetNumber(_taiho.GetNumber() + totalNumber);
+                _taiho.UpdateNumberText();
+            }
         }
     }
 
