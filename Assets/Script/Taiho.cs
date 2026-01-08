@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SceneManagement;
 
 public class Taiho : MonoBehaviour
 {
+    [SerializeField] private CameraCursor _cursor;
+    private TrajectoryPreview _trajectory;
     private AudioSource _audioSource;
+
     [SerializeField] AudioClip _shootSound;
     [SerializeField] private Transform _startPos;
     public GameObject _bulletPrefab;
@@ -18,10 +22,14 @@ public class Taiho : MonoBehaviour
     bool _shotting = false;
     int _damage = 0;
     List<GameObject> _bullets = new List<GameObject>();
-
-
+    private Vector3 _diraction;
+    private void OnValidate()
+    {
+        _cursor ??= GetComponent<CameraCursor>();
+    }
     private void Start()
     {
+        _trajectory = GetComponent<TrajectoryPreview>();
         _audioSource = GetComponent<AudioSource>();
         SetNumber(_bulletNumber);
         UpdateNumberText();
@@ -40,6 +48,11 @@ public class Taiho : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        _diraction = GetDiraction();
+        _trajectory.Draw(_diraction);
+    }
 
     public void Shot()
     {
@@ -52,36 +65,38 @@ public class Taiho : MonoBehaviour
 
     IEnumerator _Shot()
     {
+        if (_cursor == null) yield break;
         Instantiate(_shootEffect, _startPos.position, _startPos.rotation);
-        Vector2 screenPos = Mouse.current.position.ReadValue();
-        Ray ray = Camera.main.ScreenPointToRay(screenPos);
+        _audioSource.PlayOneShot(_shootSound);
 
-        int mask = LayerMask.GetMask("CameraRay");
-        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, mask))
+            WaitForSeconds delay = new WaitForSeconds(0.1f);
+
+        for (int i = 0; i < _bulletNumber; i++)
         {
-            Vector3 direction = hit.point - transform.position;
-            direction.y = 0.0f;
+            GameObject obj = Instantiate(_bulletPrefab, _startPos.position, Quaternion.identity);
 
-            direction = direction.normalized;
-            for (int i = 0; i < _bulletNumber; i++)
-            {
-                GameObject obj = Instantiate(_bulletPrefab);
-                obj.transform.position = transform.position;
-                Destroy(obj, 10.0f);
-                _bullets.Add(obj);
+            Bullet b = obj.GetComponent<Bullet>();
+            b.SetParameter(8f, _diraction, _damage);
 
-                Bullet b = obj.GetComponent<Bullet>();
-                b.SetParameter(8, direction,_damage);
-                _audioSource.PlayOneShot(_shootSound);
-
-                yield return new WaitForSeconds(0.1f);
-            }
+            Destroy(obj, 10f);
+            _bullets.Add(obj);
+            yield return delay;
         }
-
-
         yield break;
     }
 
+    private Vector3 GetDiraction()
+    {
+        Vector3 dir = _cursor.GetMousePoint() - _startPos.position;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude > 0.0001f)
+        {
+            dir.Normalize();
+            return dir;
+        }
+        return Vector3.zero;
+    }
 
     public void SetNumber(int number)
     {

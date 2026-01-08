@@ -3,19 +3,19 @@ using UnityEngine.InputSystem;
 
 public class CameraCursor : MonoBehaviour
 {
-    [SerializeField] private TrajectoryPreview _trajectory;
+    [SerializeField] private TurretRotation _turret;
     [SerializeField] Canvas _canvas;
     [SerializeField] RectTransform _cursor;
     [SerializeField] Stage _stage;
 
-    [SerializeField] private TurretRotation _turret;
+    private Vector3 _mouseLookPoint;
     private Transform _selectedParts;
     private Vector3 _selectedPartsStartPosition;
     private Vector3 _selectedPartsOffset;
 
     private void OnValidate()
     {
-        _trajectory ??= FindAnyObjectByType<TrajectoryPreview>();
+        _turret ??= FindAnyObjectByType<TurretRotation>();
     }
     private void FixedUpdate()
     {
@@ -43,7 +43,7 @@ public class CameraCursor : MonoBehaviour
                 1 << LayerMask.GetMask("CameraRay")))
             {
                 _stage.GetIndex(hit.point);
-                _trajectory.Draw(hit.point);
+                _mouseLookPoint = hit.point;
             }
         }
 
@@ -125,5 +125,10 @@ public class CameraCursor : MonoBehaviour
             }
 
         }
+    }
+
+    public Vector3 GetMousePoint()
+    {
+        return _mouseLookPoint;
     }
 }
