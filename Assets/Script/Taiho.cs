@@ -50,6 +50,8 @@ public class Taiho : MonoBehaviour
 
     private void Update()
     {
+        if (_shotting) return;
+
         _diraction = GetDiraction();
         _trajectory.Draw(_diraction);
     }
@@ -65,7 +67,6 @@ public class Taiho : MonoBehaviour
 
     IEnumerator _Shot()
     {
-        if (_cursor == null) yield break;
         Instantiate(_shootEffect, _startPos.position, _startPos.rotation);
         _audioSource.PlayOneShot(_shootSound);
 

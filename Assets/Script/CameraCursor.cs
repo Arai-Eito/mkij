@@ -9,9 +9,9 @@ public class CameraCursor : MonoBehaviour
     [SerializeField] Stage _stage;
 
     private Vector3 _mouseLookPoint;
-    private Transform _selectedParts;
-    private Vector3 _selectedPartsStartPosition;
-    private Vector3 _selectedPartsOffset;
+    public Transform _selectedParts;
+    public Vector3 _selectedPartsStartPosition;
+    public Vector3 _selectedPartsOffset;
 
     private void OnValidate()
     {
@@ -42,6 +42,7 @@ public class CameraCursor : MonoBehaviour
             if(Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,
                 1 << LayerMask.GetMask("CameraRay")))
             {
+
                 _stage.GetIndex(hit.point);
                 _mouseLookPoint = hit.point;
             }
@@ -72,6 +73,7 @@ public class CameraCursor : MonoBehaviour
 
                     if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, mask))
                     {
+
                         _selectedParts = hit.collider.transform;                        
                         _selectedPartsStartPosition = _selectedParts.position;
                         _selectedPartsOffset = _selectedPartsStartPosition - hit.point;
@@ -120,7 +122,7 @@ public class CameraCursor : MonoBehaviour
 
                 if(Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity, mask))
                 {
-                    _selectedParts.position = hit.point + _selectedPartsOffset;
+                    _selectedParts.position = hit.point  + _selectedPartsOffset;
                 }
             }
 
