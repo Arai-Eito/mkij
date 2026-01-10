@@ -67,5 +67,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PartsAuto
   _blocks: []
+  _setIndexOffset: {x: 0, y: 0, z: 0.5}
   _normal: {fileID: 7443590136809005068, guid: 7b51b9e6a8be7ca4e8ff7b7cbda67423, type: 3}
   _normalHit: {fileID: 7443590136809005068, guid: 6e275db0b95d527428800a79403a970a, type: 3}

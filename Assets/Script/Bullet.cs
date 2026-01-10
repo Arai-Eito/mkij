@@ -35,7 +35,7 @@ public class Bullet : MonoBehaviour
         Block axiszHitBlock = null, axisxHitBlock = null;
         RaycastHit[] hits = Physics.SphereCastAll(
             transform.position,
-            0.3f,
+            0.05f,
             vel,
             _size);
         foreach(RaycastHit h in hits)
@@ -99,8 +99,11 @@ public class Bullet : MonoBehaviour
             spawneffect = true;
             _velocity.z = -_velocity.z;
         }
-        if (spawneffect) SpawnEffect();
-
+        if (spawneffect)
+        {
+            SpawnEffect();
+            _audioSource.Play();
+        }
 
 
         if (axisxHitBlock != null && axisxHitBlock.GetBlockType() != BLOCK_TYPE.NOMOVE)

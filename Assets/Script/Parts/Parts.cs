@@ -5,13 +5,14 @@ using UnityEngine;
 public class Parts : MonoBehaviour
 {
     public Block[] _blocks;
+    [SerializeField] Vector3 _setIndexOffset;
 
     public bool SetBlock(Stage stage)
     {
 
         for(int i = 0; i < _blocks.Length; i++)
         {
-            Vector3 pos = _blocks[i].transform.position;
+            Vector3 pos = _blocks[i].transform.position + _setIndexOffset;
             int2 index = stage.GetIndex(pos);
             
             // 一つでも置けなければさいなら
@@ -21,7 +22,7 @@ public class Parts : MonoBehaviour
         // ブロックを設置する
         for(int i = 0; i < _blocks.Length; i++)
         {
-            Vector3 pos = _blocks[i].transform.position;
+            Vector3 pos = _blocks[i].transform.position + _setIndexOffset;
             int2 index = stage.GetIndex(pos);
             _blocks[i].SetIndex(index);
 

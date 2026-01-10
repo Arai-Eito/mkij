@@ -40,7 +40,7 @@ public class CameraCursor : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(screenPos);
 
             if(Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity,
-                1 << LayerMask.GetMask("CameraRay")))
+                LayerMask.GetMask("CameraRay")))
             {
 
                 _stage.GetIndex(hit.point);
@@ -122,7 +122,7 @@ public class CameraCursor : MonoBehaviour
 
                 if(Physics.Raycast(ray,out RaycastHit hit,Mathf.Infinity, mask))
                 {
-                    _selectedParts.position = hit.point  + _selectedPartsOffset;
+                    _selectedParts.position = hit.point + new Vector3(0.0f,3.3f,-0.6f) + _selectedPartsOffset;
                 }
             }
 
