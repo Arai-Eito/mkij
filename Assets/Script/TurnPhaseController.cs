@@ -83,7 +83,15 @@ public class TurnPhaseController : MonoBehaviour
     }
     public void Retry()
     {
-
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public void Skip()
+    {
+        if(_phase ==  TURN_PHASE.TAIHO_PUZZLE || _phase == TURN_PHASE.TAIHO_WAIT)
+        {
+            _taiho.Skip();
+            _phase = TURN_PHASE.STAGE_UPDATE;
+        }
     }
 }

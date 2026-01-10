@@ -20,6 +20,7 @@ public class Taiho : MonoBehaviour
     [SerializeField] TMP_Text _text;
     [SerializeField] GameObject _shootEffect;
     bool _shotting = false;
+    bool _skip = false;
     int _damage = 0;
     List<GameObject> _bullets = new List<GameObject>();
     private Vector3 _diraction;
@@ -61,6 +62,7 @@ public class Taiho : MonoBehaviour
         if (_shotting) return;
 
         _shotting = true;
+        _skip = false;
         StartCoroutine(_Shot());
         
     }
@@ -74,6 +76,10 @@ public class Taiho : MonoBehaviour
 
         for (int i = 0; i < _bulletNumber; i++)
         {
+            if(_skip)
+            {
+                yield break;
+            }
             GameObject obj = Instantiate(_bulletPrefab, _startPos.position, Quaternion.identity);
 
             Bullet b = obj.GetComponent<Bullet>();
@@ -127,6 +133,17 @@ public class Taiho : MonoBehaviour
         _text.text = _number.ToString();        
     }
 
+    public void Skip()
+    {
+        _skip = true;
+
+        while(_bullets.Count != 0)
+        {
+            Destroy(_bullets[0]);
+            _bullets.RemoveAt(0);
+        }
+
+    }
     public bool GetShotting() { return  _shotting; }
     public bool GetIsDead() { return _number <= 0; }
 }
