@@ -4,6 +4,7 @@ using UnityEngine;
 public class BlockMove : Block
 {
 
+
     public override void Move()
     {
         int2 toindex = _index + new int2(0, -1); 

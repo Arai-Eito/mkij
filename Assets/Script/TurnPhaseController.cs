@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using unityroom.Api;
 public enum TURN_PHASE
 {
     NONE = 0,
@@ -17,7 +18,7 @@ public class TurnPhaseController : MonoBehaviour
 
     [SerializeField] Taiho _taiho;
     [SerializeField] Animator _animator;
-
+    [SerializeField] ScoreManager _scoreManager;
 
     private void Start()
     {
@@ -57,8 +58,10 @@ public class TurnPhaseController : MonoBehaviour
                 break;
 
             case TURN_PHASE.GAMEOVER:
-               
-                if(Mouse.current.rightButton.wasReleasedThisFrame)
+
+                _scoreManager.UploadScore();
+
+                if (Mouse.current.rightButton.wasReleasedThisFrame)
                 {
                     SceneManager.LoadScene("SampleScene");
                 }

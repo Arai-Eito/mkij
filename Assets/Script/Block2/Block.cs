@@ -51,6 +51,7 @@ public class Block : MonoBehaviour
     }
     //—ñ‚ÅÁ‚³‚ê‚½‚Æ‚«
     public virtual void ClearLine() { }
+    public virtual void Damaged() { }
     // ‰ó‚ê‚½‚Æ‚«
     public virtual void Broken() { }
     // ˆÚ“®‚Ìd•û

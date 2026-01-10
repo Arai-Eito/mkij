@@ -12,6 +12,10 @@ public class ItemManager : MonoBehaviour
 
     private int _reroll = 0;
 
+    public const int MaxReroll = 3;
+
+    
+
 
     private void Awake()
     {
@@ -61,7 +65,11 @@ public class ItemManager : MonoBehaviour
     {
         _itemlist.ItemClear(); 
     }
-    public void AddReroll(int r) { _reroll += r; }
+    public void AddReroll(int amount)
+    {
+        _reroll = Mathf.Clamp(_reroll + amount, 0, MaxReroll);
+    }
+
     public bool GetCanReroll() => 0 < _reroll;
     public int GetRerollCount() { return _reroll; }
 }

@@ -8,15 +8,24 @@ public class RerollButtonUI : MonoBehaviour
     [SerializeField] private Image buttonImage;
     [SerializeField] private ButtonAnim buttonAnim;
     [SerializeField] private PopOnIncrease pop;
-    private int _prevCount = -999;
 
     [Header("Sprites / Textures")]
     [SerializeField] private Sprite spriteDisabled; // 灰色
     [SerializeField] private Sprite spriteEnabled;  // 押せる
 
+    [Header("Reroll Icons (0..3)")]
+    [SerializeField] private Image[] rerollIcons;   // プレゼント箱3つ（左→右）
+    [SerializeField] private PopOnIncrease[] iconPops;     // 同じ順番で3つ
+    [SerializeField] private Sprite iconOff;         // 灰
+    [SerializeField] private Sprite iconOn;          // 白
+    [SerializeField] private int maxReroll = 3;
+
     [Header("Count Text (optional)")]
-    [SerializeField] private GameObject countRoot;          // テキストの親(表示/非表示)
+    [SerializeField] private GameObject countRoot;
     [SerializeField] private Text countText;
+
+    private int _prevCount = -999;
+
     private void Reset()
     {
         button = GetComponent<Button>();
@@ -24,6 +33,7 @@ public class RerollButtonUI : MonoBehaviour
         buttonAnim = GetComponent<ButtonAnim>();
         pop = GetComponent<PopOnIncrease>();
     }
+
     private void OnEnable()
     {
         Refresh();
@@ -34,56 +44,64 @@ public class RerollButtonUI : MonoBehaviour
         Refresh();
     }
 
-    // Button の OnClick に登録する
     public void OnClickReroll()
     {
         if (!ItemManager.instance) return;
-        if (!ItemManager.instance.GetCanReroll()) return;
+
+        // クリック時点でUI側も上限＆下限を保証（保険）
+        int count = Mathf.Clamp(ItemManager.instance.GetRerollCount(), 0, maxReroll);
+        if (count <= 0) return;
 
         ItemManager.instance.ItemReroll();
-
-        // 押した直後にUI更新
         Refresh();
     }
+
     private void Refresh()
     {
         if (!ItemManager.instance) return;
 
-        int count = ItemManager.instance.GetRerollCount();
+        int raw = ItemManager.instance.GetRerollCount();
+        int count = Mathf.Clamp(raw, 0, maxReroll);
         bool can = count > 0;
 
-        // 押せるか
-        if (button)
-            button.interactable = can;
+        if (button) button.interactable = can;
+        if (buttonImage) buttonImage.sprite = can ? spriteEnabled : spriteDisabled;
+        if (buttonAnim) buttonAnim.enabled = can;
 
-        // 見た目
-        if (buttonImage)
-            buttonImage.sprite = can ? spriteEnabled : spriteDisabled;
+        RefreshIcons(count);
 
-        // 縮小アニメのON/OFF
-        if (buttonAnim)
-            buttonAnim.enabled = can;
-
-        // 回数表示
-        if (countRoot)
-            countRoot.SetActive(can);
-
-        if (countText)
-            countText.text = count.ToString(); // "x"付けたければ $"x{count}"
-
-        // 初回だけ膨らまない
+        // 初回は何もしない
         if (_prevCount == -999)
         {
             _prevCount = count;
+            return;
         }
-        else
+
+        // 増えたとき
+        if (count > _prevCount)
         {
-            // 増えた瞬間に膨らむ
-            if (count > _prevCount)
-            {
-                if (pop) pop.PlayPop();
-            }
-            _prevCount = count;
+            int index = count - 1; // 新しく点いた箱
+            if (index >= 0 && index < iconPops.Length)
+                iconPops[index]?.PlayPop();
+        }
+        // 使ったとき
+        else if (count < _prevCount)
+        {
+            int index = _prevCount - 1; // 消えた箱
+            if (index >= 0 && index < iconPops.Length)
+                iconPops[index]?.PlayPop();
+        }
+
+        _prevCount = count;
+    }
+
+    private void RefreshIcons(int count)
+    {
+        for (int i = 0; i < rerollIcons.Length; i++)
+        {
+            bool on = i < count;
+            rerollIcons[i].sprite = on ? iconOn : iconOff;
         }
     }
+
 }

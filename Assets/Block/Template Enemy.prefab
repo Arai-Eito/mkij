@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1423580640222728625}
   - component: {fileID: 1533326314035349971}
   - component: {fileID: 1918239914071020385}
+  - component: {fileID: 9128908525237563730}
   m_Layer: 14
   m_Name: Template Enemy
   m_TagString: Untagged
@@ -49,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlockEnemy
   _type: 1
   _text: {fileID: 3053138989879741483}
+  puffer: {fileID: 9128908525237563730}
 --- !u!65 &1918239914071020385
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -70,6 +72,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!114 &9128908525237563730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4977096690442463124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d3584c4e9fcf148899ceba583293e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlockPuffer
+  _transform: {fileID: 876560063720850949}
+  damageScale: 1.2
+  animTime: 0.1
 --- !u!1001 &837832012136800750
 PrefabInstance:
   m_ObjectHideFlags: 0

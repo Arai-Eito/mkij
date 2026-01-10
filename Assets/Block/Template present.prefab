@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 1422908200177925549}
   - component: {fileID: 3524585723653130876}
   - component: {fileID: 2953472129657113232}
+  - component: {fileID: -4076779509809098269}
   m_Layer: 0
   m_Name: Template present
   m_TagString: Untagged
@@ -160,6 +161,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlockPresent
   _type: 1
   _text: {fileID: 645175483908114227}
+  puffer: {fileID: -4076779509809098269}
+--- !u!114 &-4076779509809098269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316012465294096702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d3584c4e9fcf148899ceba583293e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlockPuffer
+  _transform: {fileID: 979535444876081021}
+  damageScale: 1.2
+  animTime: 0.1
 --- !u!1 &491968646077115847
 GameObject:
   m_ObjectHideFlags: 0
