@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d3584c4e9fcf148899ceba583293e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockPuffer
-  _transform: {fileID: 979535444876081021}
+  _transform: {fileID: 1422908200177925549}
   damageScale: 1.2
   animTime: 0.1
 --- !u!1 &491968646077115847

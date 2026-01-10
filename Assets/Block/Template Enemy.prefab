@@ -30,7 +30,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2, y: 1, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4786315564741100139}
   - {fileID: 876560063720850949}
@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d3584c4e9fcf148899ceba583293e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockPuffer
-  _transform: {fileID: 876560063720850949}
+  _transform: {fileID: 1423580640222728625}
   damageScale: 1.2
   animTime: 0.1
 --- !u!1001 &837832012136800750
