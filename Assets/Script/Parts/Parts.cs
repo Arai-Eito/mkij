@@ -12,7 +12,7 @@ public class Parts : MonoBehaviour
 
         for(int i = 0; i < _blocks.Length; i++)
         {
-            Vector3 pos = _blocks[i].transform.position;
+            Vector3 pos = _blocks[i].transform.position + _setIndexOffset;
             int2 index = stage.GetIndex(pos);
             
             // ˆê‚Â‚Å‚à’u‚¯‚È‚¯‚ê‚Î‚³‚¢‚È‚ç

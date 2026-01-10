@@ -92,6 +92,8 @@ public class Taiho : MonoBehaviour
         Vector3 dir = _cursor.GetMousePoint() - _startPos.position;
         dir.y = 0f;
 
+        Debug.Log(_cursor.GetMousePoint());
+
         if (dir.sqrMagnitude > 0.0001f)
         {
             dir.Normalize();

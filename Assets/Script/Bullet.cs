@@ -35,7 +35,7 @@ public class Bullet : MonoBehaviour
         Block axiszHitBlock = null, axisxHitBlock = null;
         RaycastHit[] hits = Physics.SphereCastAll(
             transform.position,
-            0.3f,
+            0.05f,
             vel,
             _size);
         foreach(RaycastHit h in hits)
