@@ -99,8 +99,11 @@ public class Bullet : MonoBehaviour
             spawneffect = true;
             _velocity.z = -_velocity.z;
         }
-        if (spawneffect) SpawnEffect();
-
+        if (spawneffect)
+        {
+            SpawnEffect();
+            _audioSource.Play();
+        }
 
 
         if (axisxHitBlock != null && axisxHitBlock.GetBlockType() != BLOCK_TYPE.NOMOVE)

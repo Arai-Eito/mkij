@@ -78,6 +78,7 @@ public class Taiho : MonoBehaviour
 
             Bullet b = obj.GetComponent<Bullet>();
             b.SetParameter(8f, _diraction, _damage);
+            _audioSource.PlayOneShot(_shootSound);
 
             Destroy(obj, 10f);
             _bullets.Add(obj);
