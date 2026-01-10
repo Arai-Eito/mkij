@@ -661,6 +661,11 @@ Transform:
   - {fileID: 2089910289}
   m_Father: {fileID: 1375364060}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &288769871 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2275721571885089005, guid: acdb90624a404aa438447006f1026065, type: 3}
+  m_PrefabInstance: {fileID: 1530268010}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &298055734
 GameObject:
   m_ObjectHideFlags: 0
@@ -2530,6 +2535,9 @@ MonoBehaviour:
   _canvas: {fileID: 142648297}
   _cursor: {fileID: 525642528}
   _stage: {fileID: 234566201}
+  _selectedParts: {fileID: 0}
+  _selectedPartsStartPosition: {x: 0, y: 0, z: 0}
+  _selectedPartsOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &1325326166
 Transform:
   m_ObjectHideFlags: 0
@@ -2673,6 +2681,7 @@ GameObject:
   - component: {fileID: 1423471609}
   - component: {fileID: 1423471610}
   - component: {fileID: 1423471611}
+  - component: {fileID: 1423471612}
   m_Layer: 10
   m_Name: Taiho
   m_TagString: Untagged
@@ -2697,8 +2706,8 @@ Transform:
   - {fileID: 4463719646268864543}
   - {fileID: 1988472787}
   - {fileID: 1798546883}
-  - {fileID: 369181553}
   - {fileID: 1461169913}
+  - {fileID: 288769871}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1423471610
@@ -2836,7 +2845,7 @@ MonoBehaviour:
   _collisionLayer:
     serializedVersion: 2
     m_Bits: 30775
-  _endLineEffect: {fileID: 369181553}
+  _endLineEffect: {fileID: 0}
 --- !u!4 &1461169913 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8783613104737551003, guid: 0e2dc313081010d47a4ce5a593486109, type: 3}
@@ -3113,7 +3122,7 @@ GameObject:
   - component: {fileID: 1560556497}
   - component: {fileID: 1560556496}
   - component: {fileID: 1560556495}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CAMERA_RAY
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3129,7 +3138,7 @@ Transform:
   m_GameObject: {fileID: 1560556493}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 3.32, z: 2}
+  m_LocalPosition: {x: 2.5, y: 3.3, z: 2}
   m_LocalScale: {x: 20.781313, y: 0.14462754, z: 20.781313}
   m_ConstrainProportionsScale: 0
   m_Children: []

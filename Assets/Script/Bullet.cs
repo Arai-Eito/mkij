@@ -1,3 +1,4 @@
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
 
@@ -28,15 +29,20 @@ public class Bullet : MonoBehaviour
         vel.y = 0.0f;
         vel = vel.normalized;
 
-        if (Physics.BoxCast(
+
+
+        float minAxiszHitDistance = 999.0f, minAxisxHitDistance = 999.0f;
+        Block axiszHitBlock = null, axisxHitBlock = null;
+        RaycastHit[] hits = Physics.SphereCastAll(
             transform.position,
-            new Vector3(0.2f, 0.2f, 0.2f),
+            0.3f,
             vel,
-            out RaycastHit hit,
-            Quaternion.identity,
-            _size))
+            _size);
+        foreach(RaycastHit h in hits)
         {
-            Transform hitTrans = hit.collider.transform;
+            if (h.collider == null) continue;
+
+            Transform hitTrans = h.collider.transform;
 
             Vector3 direction = transform.position - hitTrans.position;
             direction.y = 0.0f;
@@ -53,46 +59,97 @@ public class Bullet : MonoBehaviour
             float outVertical = Vector3.Dot(direction, axis);
 
 
-            SpawnEffect();
-            _audioSource.PlayOneShot(_hitEffect);
-
             // 盾軸の方が近い
             if (Mathf.Abs(outHorizontal) < Mathf.Abs(outVertical))
             {
-                _velocity.z = Mathf.Sign(direction.z) * Mathf.Abs(_velocity.z);
+                if(h.distance <= minAxiszHitDistance)
+                {
+                    minAxiszHitDistance = h.distance;
+
+                    // ブロックを取得
+                    Block b = h.collider.gameObject.GetComponent<Block>();
+                    axiszHitBlock = (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE) ? b : null;
+                }
             }
             // 横軸の方が近い
             else
             {
-                _velocity.x = Mathf.Sign(direction.x) * Mathf.Abs(_velocity.x);
+                if (h.distance <= minAxisxHitDistance)
+                {
+                    minAxisxHitDistance = h.distance;
+
+                    // ブロックを取得
+                    Block b = h.collider.gameObject.GetComponent<Block>();
+                    axisxHitBlock = (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE) ? b : null;
+                }
             }
 
-            // ダメージ
-            // NOMOVEにはダメージを与えない
-            Block b = hit.collider.gameObject.GetComponent<Block>();
-            if (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE)
-            {
-                int damage = _damage;
-                int health = b.GetNumber() - damage;
 
-
-                if (health <= 0)
-                {
-                    damage = health;
-                    Stage.instance.DeleteBlock(b.GetIndex());
-                }
-                else
-                {
-                    b.SetNumber(health);
-                    b.UpdateNumberText();
-                    b.Damaged(); // ダメージエフェクト
-                }
-
-
-                // スコア追加
-                ScoreManager.instance.AddScore(damage);
-            }
         }
+
+
+        bool spawneffect = false;
+        if (minAxisxHitDistance != 999.0f)
+        {
+            spawneffect = true;
+            _velocity.x = -_velocity.x;
+        }
+        if (minAxiszHitDistance != 999.0f)
+        {
+            spawneffect = true;
+            _velocity.z = -_velocity.z;
+        }
+        if (spawneffect) SpawnEffect();
+
+
+
+        if (axisxHitBlock != null && axisxHitBlock.GetBlockType() != BLOCK_TYPE.NOMOVE)
+        {
+            // ダメージ
+            int damage = _damage;
+            int health = axisxHitBlock.GetNumber() - damage;
+
+
+            if (health <= 0)
+            {
+                damage = health;
+                Stage.instance.DeleteBlock(axisxHitBlock.GetIndex());
+            }
+            else
+            {
+                axisxHitBlock.SetNumber(health);
+                axisxHitBlock.UpdateNumberText();
+                axisxHitBlock.Damaged(); // ダメージエフェクト
+            }
+
+
+            // スコア追加
+            ScoreManager.instance.AddScore(damage);
+        }
+        if (axiszHitBlock != null && axiszHitBlock.GetBlockType() != BLOCK_TYPE.NOMOVE)
+        {
+            // ダメージ
+            int damage = _damage;
+            int health = axiszHitBlock.GetNumber() - damage;
+
+
+            if (health <= 0)
+            {
+                damage = health;
+                Stage.instance.DeleteBlock(axiszHitBlock.GetIndex());
+            }
+            else
+            {
+                axiszHitBlock.SetNumber(health);
+                axiszHitBlock.UpdateNumberText();
+                axiszHitBlock.Damaged(); // ダメージエフェクト
+            }
+
+
+            // スコア追加
+            ScoreManager.instance.AddScore(damage);
+        }
+
 
 
         if (transform.position.z < 0) Destroy(gameObject);
