@@ -51,8 +51,12 @@ public class Taiho : MonoBehaviour
 
     private void Update()
     {
-        if (_shotting) return;
-
+        if (_shotting)
+        {
+            _trajectory.SetVisable(false);
+            return;
+        }
+        _trajectory.SetVisable(true);
         _diraction = GetDiraction();
         _trajectory.Draw(_diraction);
     }

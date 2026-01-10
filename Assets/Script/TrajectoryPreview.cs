@@ -2,25 +2,21 @@
 
 public class TrajectoryPreview : MonoBehaviour
 {
-    [SerializeField] LineRenderer _line;
     [SerializeField] float _maxDistance = 20f;
     [SerializeField] float _radius = 0.25f;
     [SerializeField] LayerMask _collisionLayer;
     [SerializeField] Transform _endLineEffect;
-
+    [SerializeField] LineRenderer _line1;
+    [SerializeField] LineRenderer _line2;
     private void Awake()
     {
-        if (_line == null)
-            _line = GetComponent<LineRenderer>();
 
-        _line.positionCount = 3;
     }
 
     public void Draw(Vector3 direction)
     {
         if (direction.sqrMagnitude < 0.0001f)
         {
-            Clear();
             return;
         }
 
@@ -29,7 +25,7 @@ public class TrajectoryPreview : MonoBehaviour
         direction.y = 0f;
         direction.Normalize();
 
-        _line.SetPosition(0, startPos);
+        _line1.SetPosition(0, startPos);
 
         if (Physics.SphereCast(
             startPos,
@@ -39,10 +35,10 @@ public class TrajectoryPreview : MonoBehaviour
             _maxDistance,
             _collisionLayer))
         {
-            Vector3 p1 = hit1.point- direction* _radius;
+            Vector3 p1 = hit1.point - direction * _radius;
             if (p1.z < 0) p1.z = 0;
-            _line.SetPosition(1, p1);
-
+            _line1.SetPosition(1, p1 + direction * 0.05f);
+            _line2.SetPosition(0, p1);
             Vector3 normal = hit1.normal;
             normal.y = 0f;
             normal.Normalize();
@@ -66,29 +62,27 @@ public class TrajectoryPreview : MonoBehaviour
 
                 float backOffset = 0.15f;
                 p2 -= reflectDir * backOffset;
-
-                _line.SetPosition(2, p2);
+                _line2.SetPosition(1, p2);
 
                 if (_endLineEffect != null)
                     _endLineEffect.position = p2;
             }
             else
             {
-                _line.SetPosition(2, bounceStart + reflectDir * _maxDistance);
+                _line2.SetPosition(1, bounceStart + reflectDir * _maxDistance);
             }
         }
         else
         {
             Vector3 end = startPos + direction * _maxDistance;
-            _line.SetPosition(1, end);
-            _line.SetPosition(2, end);
+            _line1.SetPosition(1, end);
+            _line2.SetPosition(1, end);
         }
     }
-
-    public void Clear()
+    public void SetVisable(bool status)
     {
-        _line.positionCount = 0;
-        if (_endLineEffect != null)
-            _endLineEffect.gameObject.SetActive(false);
+        _line1.gameObject.SetActive(status);
+        _line2.gameObject.SetActive(status);
+        _endLineEffect.gameObject.SetActive(status);
     }
 }
