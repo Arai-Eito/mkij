@@ -8,6 +8,7 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] Vector3 _velocity;
     [SerializeField] float _size;
+    [SerializeField] float _distance;
     [SerializeField] GameObject _hitEffectPrefab;
 
     private AudioSource _audioSource;
@@ -35,9 +36,9 @@ public class Bullet : MonoBehaviour
         Block axiszHitBlock = null, axisxHitBlock = null;
         RaycastHit[] hits = Physics.SphereCastAll(
             transform.position,
-            0.05f,
+            _size,
             vel,
-            _size);
+            _distance);
         foreach(RaycastHit h in hits)
         {
             if (h.collider == null) continue;
@@ -163,20 +164,10 @@ public class Bullet : MonoBehaviour
 
         GameObject fx = Instantiate(_hitEffectPrefab, transform.position, transform.rotation);
     }
-    public void SetParameter(float speed, Vector3 velocity, int daamge)
+    public void SetParameter(float speed, Vector3 velocity, int damage)
     {
         _speed = speed;
         _velocity = velocity;
-        _damage = daamge;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Vector3 vel = _velocity;
-        vel.y = 0.0f;
-        vel = vel.normalized;
-
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position, vel * _size);
+        _damage = damage;
     }
 }
