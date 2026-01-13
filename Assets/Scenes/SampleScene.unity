@@ -554,8 +554,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 244.2, y: -190.1}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: -326.5, y: -164.5}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &188353429
 MonoBehaviour:
@@ -662,7 +662,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1c107a45b5cb3544387dac0736b6630c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0843b994715c78d44a5447246e65ba05, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1844,7 +1844,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!1 &832575517
 GameObject:
@@ -2685,9 +2685,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '0000000
-
-'
+  m_Text: 0
 --- !u!222 &1260056881
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3487,6 +3485,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2830715642295125613, guid: 93a9efc52ce2a0846b41eb16bee9b7c0, type: 3}
+      propertyPath: _size
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 2830715642295125613, guid: 93a9efc52ce2a0846b41eb16bee9b7c0, type: 3}
+      propertyPath: _distance
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 3199691035060959364, guid: 93a9efc52ce2a0846b41eb16bee9b7c0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 14.01

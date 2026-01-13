@@ -1,10 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor.SceneManagement;
 
 public class Taiho : MonoBehaviour
 {
