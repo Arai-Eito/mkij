@@ -3,21 +3,17 @@ using UnityEngine.InputSystem;
 
 public class CameraCursor : MonoBehaviour
 {
-    [SerializeField] private TurretRotation _turret;
     [SerializeField] Canvas _canvas;
     [SerializeField] RectTransform _cursor;
     [SerializeField] Stage _stage;
 
     private Vector3 _mouseLookPoint;
-    public Transform _selectedParts;
-    public Vector3 _selectedPartsStartPosition;
-    public Vector3 _selectedPartsOffset;
-    public Parts _selectedPartsComponent;
+    private Transform _selectedParts;
+    private Vector3 _selectedPartsStartPosition;
+    private Vector3 _selectedPartsOffset;
+    private Parts _selectedPartsComponent;
 
-    private void OnValidate()
-    {
-        _turret ??= FindAnyObjectByType<TurretRotation>();
-    }
+    
     private void FixedUpdate()
     {
         Vector2 screenPos = Mouse.current.position.ReadValue();
@@ -59,11 +55,6 @@ public class CameraCursor : MonoBehaviour
 
 
             int mask = LayerMask.GetMask("CameraRay");
-
-            if (Physics.Raycast(ray, out RaycastHit hit2, Mathf.Infinity, mask))
-            {
-                _turret.LookAtPoint(hit2.point);
-            }
 
             // ƒNƒŠƒbƒN‚¶
             if (Mouse.current.leftButton.wasPressedThisFrame)
