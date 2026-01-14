@@ -223,7 +223,7 @@ public class Bullet : MonoBehaviour
 
             if (health <= 0)
             {
-                damage = health;
+                damage = _targetBlock.GetNumber();
                 Stage.instance.DeleteBlock(_targetBlock.GetIndex());
             }
             else

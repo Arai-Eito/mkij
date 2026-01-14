@@ -97,7 +97,7 @@ public class Stage : MonoBehaviour
     {
         int lncrease = (int)(_killPosition * 0.2f) ;
         _level+= 1 + lncrease;
-//        Debug.Log("level "+_level+"   lncrease "+ (1 + lncrease) + "   killposition "+_killPosition );
+        Debug.Log("level "+_level+"   lncrease "+ (1 + lncrease) + "   killposition "+_killPosition );
         Move();
 
 

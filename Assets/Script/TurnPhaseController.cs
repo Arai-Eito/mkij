@@ -40,7 +40,7 @@ public class TurnPhaseController : MonoBehaviour
                 break;
 
             case TURN_PHASE.TAIHO_WAIT:
-                if(_taiho.GetShotting() == false)
+                if(_taiho.GetWait() == false)
                 {
                     _phase = TURN_PHASE.STAGE_UPDATE;
                 }

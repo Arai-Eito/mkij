@@ -21,24 +21,10 @@ public class BlockMove : Block
                     break;
 
                 case BLOCK_TYPE.NOMOVE:
-                    int number = toblock.GetNumber() - _number;
-                    if(number == 0)
-                    {
-                        Stage.instance.DeleteBlock(toindex);
-                        Stage.instance.DeleteBlock(_index);
-                    }
-                    else if (number < 0)
-                    {
-                        SetNumber(-number);
-                        Stage.instance.DeleteBlock(toindex);
 
-                        Stage.instance.SwapBlock(_index, toindex);
-                    }
-                    else
-                    {
-                        toblock.SetNumber(number);
-                        Stage.instance.DeleteBlock(_index);
-                    }
+                    Stage.instance.DeleteBlock(toindex);
+                    Stage.instance.DeleteBlock(_index);
+
                     break;
             }
 
