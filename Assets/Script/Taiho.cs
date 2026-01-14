@@ -56,7 +56,7 @@ public class Taiho : MonoBehaviour
             _trajectory.SetVisable(false);
             return;
         }
-        _trajectory.SetVisable(true);
+        //_trajectory.SetVisable(true);
         _diraction = GetDiraction();
         _trajectory.Draw(_diraction);
     }

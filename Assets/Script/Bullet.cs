@@ -244,6 +244,7 @@ public class Bullet : MonoBehaviour
             _velocity = _nextVelocity;
             // エフェクト出す
             SpawnEffect();
+            _audioSource.PlayOneShot(_hitEffect);
         }
 
 
