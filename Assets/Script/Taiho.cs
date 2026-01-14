@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class Taiho : MonoBehaviour
 {
@@ -16,9 +17,12 @@ public class Taiho : MonoBehaviour
     [SerializeField] int _bulletNumber = 50;
     [SerializeField] TMP_Text _text;
     [SerializeField] GameObject _shootEffect;
-    bool _shotting = false;
+
+    bool _shooting = false;
+
     bool _skip = false;
     int _damage = 0;
+    int _modDamage = 0;
     List<GameObject> _bullets = new List<GameObject>();
     private Vector3 _diraction;
     private void OnValidate()
@@ -35,34 +39,33 @@ public class Taiho : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if(_shooting == false)
+        {
 
-        if(_bullets.Count <= 0)
-        {
-            _shotting = false;
-        }
-        else
-        {
-            if (_bullets[0] == null) _bullets.RemoveAt(0);
+            if (_bullets.Count > 0)
+            {
+                if (_bullets[0] == null) _bullets.RemoveAt(0);
+            }
         }
     }
 
     private void Update()
     {
-        if (_shotting)
+        if (_shooting)
         {
             _trajectory.SetVisable(false);
             return;
         }
-        _trajectory.SetVisable(true);
+        //_trajectory.SetVisable(true);
         _diraction = GetDiraction();
         _trajectory.Draw(_diraction);
     }
 
     public void Shot()
     {
-        if (_shotting) return;
+        if (_shooting) return;
 
-        _shotting = true;
+        _shooting = true;
         _skip = false;
         StartCoroutine(_Shot());
         
@@ -73,33 +76,49 @@ public class Taiho : MonoBehaviour
         Instantiate(_shootEffect, _startPos.position, _startPos.rotation);
         _audioSource.PlayOneShot(_shootSound);
 
-            WaitForSeconds delay = new WaitForSeconds(0.1f);
+        WaitForSeconds delay = new WaitForSeconds(0.1f);
 
         for (int i = 0; i < _bulletNumber; i++)
         {
             if(_skip)
             {
+                _shooting = false;
                 yield break;
             }
-            GameObject obj = Instantiate(_bulletPrefab, _startPos.position, Quaternion.identity);
 
-            Bullet b = obj.GetComponent<Bullet>();
-            b.SetParameter(8f, _diraction, _damage);
-            _audioSource.PlayOneShot(_shootSound);
-
-            Destroy(obj, 10f);
-            _bullets.Add(obj);
+            CreateBullet(_damage);
             yield return delay;
         }
+
+        if(_modDamage != 0)
+        {
+            CreateBullet(_modDamage);
+        }
+
+        _shooting = false;
         yield break;
     }
+
+    private void CreateBullet(int damage)
+    {
+        GameObject obj = Instantiate(_bulletPrefab, _startPos.position, Quaternion.identity);
+
+        Bullet b = obj.GetComponent<Bullet>();
+        b.SetParameter(8f, _diraction, damage);
+        _audioSource.PlayOneShot(_shootSound);
+
+        Destroy(obj, 10f);
+        _bullets.Add(obj);
+    }
+
+
 
     private Vector3 GetDiraction()
     {
         Vector3 dir = _cursor.GetMousePoint() - _startPos.position;
         dir.y = 0f;
 
-        Debug.Log(_cursor.GetMousePoint());
+        // Debug.Log(_cursor.GetMousePoint());
 
         if (dir.sqrMagnitude > 0.0001f)
         {
@@ -117,6 +136,7 @@ public class Taiho : MonoBehaviour
         {
             _bulletNumber = 30;
             _damage = _number / _bulletNumber;
+            _modDamage = _number % _bulletNumber;
         }
         else
         {
@@ -145,6 +165,6 @@ public class Taiho : MonoBehaviour
         }
 
     }
-    public bool GetShotting() { return  _shotting; }
+    public bool GetWait() { return  _shooting || _bullets.Count > 0; }
     public bool GetIsDead() { return _number <= 0; }
 }

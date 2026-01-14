@@ -17,7 +17,7 @@ public class PartsAuto : Parts
         if (blockNum <= 0) return;
 
         // 子どもを全部消す
-        foreach(Transform child in transform)
+        foreach(Transform child in _blockBase)
         {
             Destroy(child.gameObject);
         }
@@ -81,7 +81,7 @@ public class PartsAuto : Parts
             //ブロックを生成
             GameObject obj = Instantiate(
                 (normalhit) ? _normalHit : _normal,
-                transform);
+                _blockBase);
             obj.transform.position = transform.position + positions[i];
             _blocks[i] = obj.GetComponent<Block>();
 

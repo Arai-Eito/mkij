@@ -12,6 +12,7 @@ public class CameraCursor : MonoBehaviour
     public Transform _selectedParts;
     public Vector3 _selectedPartsStartPosition;
     public Vector3 _selectedPartsOffset;
+    public Parts _selectedPartsComponent;
 
     private void OnValidate()
     {
@@ -63,6 +64,8 @@ public class CameraCursor : MonoBehaviour
             {
                 _turret.LookAtPoint(hit2.point);
             }
+
+            // ƒNƒŠƒbƒN‚¶
             if (Mouse.current.leftButton.wasPressedThisFrame)
             {
 
@@ -77,7 +80,10 @@ public class CameraCursor : MonoBehaviour
                         _selectedParts = hit.collider.transform;                        
                         _selectedPartsStartPosition = _selectedParts.position;
                         _selectedPartsOffset = _selectedPartsStartPosition - hit.point;
-                        
+                        _selectedPartsComponent = _selectedParts.gameObject.GetComponent<Parts>();
+
+
+                        _selectedPartsComponent.SetHaving(true) ;
                     }
                     else
                     {
@@ -86,6 +92,7 @@ public class CameraCursor : MonoBehaviour
                 }
             }
 
+            // —£‚µ‚½‚Æ‚«
             if (Mouse.current.leftButton.wasReleasedThisFrame)
             {
                 if(_selectedParts != null)
@@ -110,6 +117,7 @@ public class CameraCursor : MonoBehaviour
                     else
                     {
                         _selectedParts.position = _selectedPartsStartPosition;
+                        _selectedPartsComponent.SetHaving(false);
                     }
 
                     _selectedParts = null;
@@ -124,6 +132,8 @@ public class CameraCursor : MonoBehaviour
                 {
                     _selectedParts.position = hit.point + new Vector3(0.0f,3.3f,-0.6f) + _selectedPartsOffset;
                 }
+
+                _selectedPartsComponent.SetPrediction();
             }
 
         }

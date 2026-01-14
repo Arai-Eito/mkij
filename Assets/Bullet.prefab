@@ -106,8 +106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Bullet
   _speed: 3
   _velocity: {x: 1, y: 0, z: 1}
-  _size: 0.03
-  _distance: 0.2
+  _size: 0.1
+  _castRadius: 0.05
   _hitEffectPrefab: {fileID: 2708598583397607911, guid: 6398d43fe79ea0140913dc5530c646af, type: 3}
   _hitEffect: {fileID: 8300000, guid: 453eeec3ecef97340a131ee4dfbcb3bb, type: 3}
 --- !u!82 &6958694795924016497

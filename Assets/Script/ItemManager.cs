@@ -49,6 +49,7 @@ public class ItemManager : MonoBehaviour
             PartsAuto p = obj.GetComponent<PartsAuto>();
             p.CreateParts(Random.Range(1,5));
             p.SetLevel(1);
+            p.SetHaving(false);
             
             _itemlist.ItemSet(i,obj);
 
