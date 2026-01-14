@@ -97,7 +97,7 @@ public class Stage : MonoBehaviour
     {
         int lncrease = (int)(_killPosition * 0.2f) ;
         _level+= 1 + lncrease;
-        Debug.Log("level "+_level+"   lncrease "+ (1 + lncrease) + "   killposition "+_killPosition );
+//        Debug.Log("level "+_level+"   lncrease "+ (1 + lncrease) + "   killposition "+_killPosition );
         Move();
 
 
@@ -137,6 +137,26 @@ public class Stage : MonoBehaviour
             }
         }
 
+    }
+    public void AutoSkip()
+    {
+        // 自動スキップ
+        bool skip = true;
+        for (int z = 0; z < 8; z++)
+        {
+            for (int x = 0; x < _stageSize.x; x++)
+            {
+                Block block = _blocks[z, x];
+                if (block.GetBlockType() != BLOCK_TYPE.MOVE) continue;
+
+                skip = false;
+            }
+        }
+        if (skip == true)
+        {
+            NextTurn();
+            AutoSkip();
+        }
     }
     public void CheckLineClear()
     {

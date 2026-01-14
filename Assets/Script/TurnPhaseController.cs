@@ -48,6 +48,7 @@ public class TurnPhaseController : MonoBehaviour
 
             case TURN_PHASE.STAGE_UPDATE:
                 Stage.instance.NextTurn();
+                Stage.instance.AutoSkip();
                 _phase = TURN_PHASE.TAIHO_PUZZLE;
 
                 if (_taiho.GetIsDead() == true)
@@ -75,7 +76,7 @@ public class TurnPhaseController : MonoBehaviour
     /// UI BUTTON “™
     public void ItemReroll()
     {
-        Debug.Log(_phase);
+//        Debug.Log(_phase);
 
         if (_phase != TURN_PHASE.TAIHO_PUZZLE) return;
 

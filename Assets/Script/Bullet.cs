@@ -1,3 +1,5 @@
+using System.Collections;
+using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Assertions.Must;
@@ -7,8 +9,6 @@ public class Bullet : MonoBehaviour
     [SerializeField] float _speed;
 
     [SerializeField] Vector3 _velocity;
-    [SerializeField] float _size;
-    [SerializeField] float _distance;
     [SerializeField] GameObject _hitEffectPrefab;
 
     private AudioSource _audioSource;
@@ -21,143 +21,151 @@ public class Bullet : MonoBehaviour
 
         _audioSource = GetComponent<AudioSource>();
 
+        _isMoving = false;
     }
-    private void FixedUpdate()
+
+    private void Update()
     {
-        transform.position += (Vector3)_velocity * _speed * Time.deltaTime;
+        /*
+        Vector3 velocity = (Vector3)_velocity * _speed * Time.deltaTime;
+        if (transform.position.z < -0.3f) Destroy(gameObject);
 
-        Vector3 vel = _velocity;
-        vel.y = 0.0f;
-        vel = vel.normalized;
+        float _size = velocity.magnitude;
 
-
-
-        float minAxiszHitDistance = 999.0f, minAxisxHitDistance = 999.0f;
-        Block axiszHitBlock = null, axisxHitBlock = null;
-        RaycastHit[] hits = Physics.SphereCastAll(
-            transform.position,
-            _size,
-            vel,
-            _distance);
-        foreach(RaycastHit h in hits)
+        if (3.0f < Mathf.Abs(transform.position.x))
         {
-            if (h.collider == null) continue;
-
-            Transform hitTrans = h.collider.transform;
-
-            Vector3 direction = transform.position - hitTrans.position;
-            direction.y = 0.0f;
-            direction = direction.normalized;
-
-            Vector3 axis;
-            axis = hitTrans.right;
-            axis.y = 0.0f;
-            axis = axis.normalized;
-            float outHorizontal = Vector3.Dot(direction, axis);
-            axis = hitTrans.forward;
-            axis.y = 0.0f;
-            axis = axis.normalized;
-            float outVertical = Vector3.Dot(direction, axis);
-
-
-            // 盾軸の方が近い
-            if (Mathf.Abs(outHorizontal) < Mathf.Abs(outVertical))
-            {
-                if(h.distance <= minAxiszHitDistance)
-                {
-                    minAxiszHitDistance = h.distance;
-
-                    // ブロックを取得
-                    Block b = h.collider.gameObject.GetComponent<Block>();
-                    axiszHitBlock = (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE) ? b : null;
-                }
-            }
-            // 横軸の方が近い
-            else
-            {
-                if (h.distance <= minAxisxHitDistance)
-                {
-                    minAxisxHitDistance = h.distance;
-
-                    // ブロックを取得
-                    Block b = h.collider.gameObject.GetComponent<Block>();
-                    axisxHitBlock = (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE) ? b : null;
-                }
-            }
-
-
-        }
-
-
-        bool spawneffect = false;
-        if (minAxisxHitDistance != 999.0f)
-        {
-            spawneffect = true;
+            Debug.Log("hanten ");
             _velocity.x = -_velocity.x;
+
+
         }
-        if (minAxiszHitDistance != 999.0f)
+
+
+        // x
+        if (Physics.Raycast(
+            transform.position,
+            Vector3.right * Mathf.Sign(velocity.x),
+            out RaycastHit hitx,
+            _size))
         {
-            spawneffect = true;
-            _velocity.z = -_velocity.z;
+            float distance = transform.position.x - hitx.collider.transform.position.x;
+
+            if (Mathf.Sign(_velocity.x) != Mathf.Sign(distance))
+            {
+                // ブロックを取得
+                Block b = hitx.collider.gameObject.GetComponent<Block>();
+                if (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE)
+                {
+
+                    // ダメージ
+                    int damage = _damage;
+                    int health = b.GetNumber() - damage;
+
+
+                    if (health <= 0)
+                    {
+                        damage = health;
+                        Stage.instance.DeleteBlock(b.GetIndex());
+                    }
+                    else
+                    {
+                        b.SetNumber(health);
+                        b.UpdateNumberText();
+                        b.Damaged(); // ダメージエフェクト
+                    }
+
+
+                    // スコア追加
+                    ScoreManager.instance.AddScore(damage);
+                }
+
+                // 方向変えて
+                _velocity.x = -_velocity.x;
+
+                // エフェクト出す
+                SpawnEffect();
+
+            }
         }
-        if (spawneffect)
+
+        if (Physics.Raycast(
+            transform.position,
+            Vector3.forward * Mathf.Sign(velocity.z),
+            out RaycastHit hitz,
+            _size))
         {
-            SpawnEffect();
-            _audioSource.Play();
+            float distance = transform.position.z - hitz.collider.transform.position.z;
+
+            if (Mathf.Sign(velocity.z) != Mathf.Sign(distance))
+            {
+                // ブロックを取得
+                Block b = hitz.collider.gameObject.GetComponent<Block>();
+                if (b != null && b.GetBlockType() != BLOCK_TYPE.NOMOVE)
+                {
+
+                    // ダメージ
+                    int damage = _damage;
+                    int health = b.GetNumber() - damage;
+
+
+                    if (health <= 0)
+                    {
+                        damage = health;
+                        Stage.instance.DeleteBlock(b.GetIndex());
+                    }
+                    else
+                    {
+                        b.SetNumber(health);
+                        b.UpdateNumberText();
+                        b.Damaged(); // ダメージエフェクト
+                    }
+
+
+                    // スコア追加
+                    ScoreManager.instance.AddScore(damage);
+                }
+
+                // 方向変えて
+                _velocity.z = -_velocity.z;
+
+                // エフェクト出す
+                SpawnEffect();
+
+            }
         }
 
 
-        if (axisxHitBlock != null && axisxHitBlock.GetBlockType() != BLOCK_TYPE.NOMOVE)
+        transform.position += velocity;
+        */
+
+        if(_isMoving == true)
         {
-            // ダメージ
-            int damage = _damage;
-            int health = axisxHitBlock.GetNumber() - damage;
-
-
-            if (health <= 0)
-            {
-                damage = health;
-                Stage.instance.DeleteBlock(axisxHitBlock.GetIndex());
-            }
-            else
-            {
-                axisxHitBlock.SetNumber(health);
-                axisxHitBlock.UpdateNumberText();
-                axisxHitBlock.Damaged(); // ダメージエフェクト
-            }
-
-
-            // スコア追加
-            ScoreManager.instance.AddScore(damage);
+            if (transform.position.z < -0.3f) Destroy(gameObject);
         }
-        if (axiszHitBlock != null && axiszHitBlock.GetBlockType() != BLOCK_TYPE.NOMOVE)
+        else
         {
-            // ダメージ
-            int damage = _damage;
-            int health = axiszHitBlock.GetNumber() - damage;
-
-
-            if (health <= 0)
+            if(Physics.Raycast(
+                transform.position,
+                _velocity.normalized,
+                out RaycastHit hit,
+                Mathf.Infinity))
             {
-                damage = health;
-                Stage.instance.DeleteBlock(axiszHitBlock.GetIndex());
-            }
-            else
-            {
-                axiszHitBlock.SetNumber(health);
-                axiszHitBlock.UpdateNumberText();
-                axiszHitBlock.Damaged(); // ダメージエフェクト
-            }
+
+                _nextVelocity = Vector3.Reflect(_velocity, hit.normal);
+                _targetBlock = hit.collider.gameObject.GetComponent<Block>();
+                _isTargetBlock = _targetBlock != null;
+                _isMoving = true;
 
 
-            // スコア追加
-            ScoreManager.instance.AddScore(damage);
+                StartCoroutine(Move(hit.point));
+            }
+                
         }
-
-
-
-        if (transform.position.z < 0) Destroy(gameObject);
     }
+
+
+
+
     void SpawnEffect()
     {
         if (_hitEffectPrefab == null) return;
@@ -169,5 +177,79 @@ public class Bullet : MonoBehaviour
         _speed = speed;
         _velocity = velocity;
         _damage = damage;
+    }
+
+
+
+    bool _isMoving = false;
+
+    bool _isTargetBlock;
+    Block _targetBlock;
+
+    Vector3 _nextVelocity;
+
+    IEnumerator Move(Vector3 targetPosition)
+    {
+
+        while(true)
+        {
+            Vector3 direction = targetPosition - transform.position;
+            float length = direction.magnitude;
+            float speed = _speed * Time.deltaTime;
+            direction = direction.normalized;
+
+            if (length < speed)
+            {
+                transform.position = targetPosition;
+                break;
+            }
+            else
+            {
+                transform.position += direction * speed;
+            }
+
+            yield return null ;
+        }
+
+        // ダメーじ
+
+        // ブロック
+        if(_targetBlock != null && _targetBlock.GetBlockType() == BLOCK_TYPE.MOVE)
+        {
+            // ダメージ
+            int damage = _damage;
+            int health = _targetBlock.GetNumber() - damage;
+
+
+            if (health <= 0)
+            {
+                damage = health;
+                Stage.instance.DeleteBlock(_targetBlock.GetIndex());
+            }
+            else
+            {
+                _targetBlock.SetNumber(health);
+                _targetBlock.UpdateNumberText();
+                _targetBlock.Damaged(); // ダメージエフェクト
+            }
+
+
+            // スコア追加
+            ScoreManager.instance.AddScore(damage);
+        }
+
+        // 方向変えて
+        if (_targetBlock != null || _isTargetBlock == false)
+        {
+            _velocity = _nextVelocity;
+            // エフェクト出す
+            SpawnEffect();
+        }
+
+
+        // 終わり
+        _isMoving = false;
+
+        yield break;
     }
 }
