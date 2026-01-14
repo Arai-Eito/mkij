@@ -17,12 +17,12 @@ public class Taiho : MonoBehaviour
 
 
     // mishanya
-    // ‘å–C‚©‚ço‚é‚â‚Â
+    // ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½
     [SerializeField] GameObject _shootEffect;
     [SerializeField] TurretRotation _turret;
     [SerializeField] AudioClip _shootSound;
     [SerializeField] private Transform _startPos;
-    // —\‘ªü
+    // ï¿½\ï¿½ï¿½ï¿½ï¿½
     private TrajectoryPreview _trajectory;
     private AudioSource _audioSource;
 
@@ -69,15 +69,15 @@ public class Taiho : MonoBehaviour
             _trajectory.SetVisable(false);
             return;
         }
-        _trajectory.SetVisable(true);
-        _direction = GetDiraction();
-        _trajectory.Draw(_direction);
 
         _turret.LookAtPoint(_turret.transform.position + _direction);
+        //_trajectory.SetVisable(true);
+        _diraction = GetDiraction();
+        _trajectory.Draw(_diraction);
     }
 
     /// <summary>
-    /// ’e‚ğ‘Å‚Â“ü‚èŒû
+    /// ï¿½eï¿½ï¿½Å‚Â“ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public void Shot()
     {
