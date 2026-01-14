@@ -72,13 +72,10 @@ public class Taiho : MonoBehaviour
 
         _turret.LookAtPoint(_turret.transform.position + _direction);
         //_trajectory.SetVisable(true);
-        _diraction = GetDiraction();
-        _trajectory.Draw(_diraction);
+        _direction = GetDiraction();
+        _trajectory.Draw(_direction);
     }
 
-    /// <summary>
-    /// �e��ł����
-    /// </summary>
     public void Shot()
     {
         if (_shooting) return;
@@ -103,13 +100,16 @@ public class Taiho : MonoBehaviour
                 yield break;
             }
 
-            CreateBullet(_damage);
-            yield return delay;
-        }
+            if (i < _modDamage) // 20
+            {
+                CreateBullet(_damage + 1);
+            }
+            else
+            {
+                CreateBullet(_damage);
+            }
 
-        if(_modDamage != 0)
-        {
-            CreateBullet(_modDamage);
+            yield return delay;
         }
 
         _shooting = false;
@@ -163,7 +163,7 @@ public class Taiho : MonoBehaviour
     {
         _number = number;
 
-        if(30 <= _number)
+        if( 30 <= _number)
         {
             _bulletNumber = 30;
             _damage = _number / _bulletNumber;
