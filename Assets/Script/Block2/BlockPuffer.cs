@@ -19,6 +19,10 @@ public class BlockPuffer : MonoBehaviour
         defaultScale = _transform.localScale;
     }
 
+    private void OnDisable()
+    {
+        StopAllCoroutines();   
+    }
 
     public void Play()
     {
