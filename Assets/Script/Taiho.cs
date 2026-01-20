@@ -72,8 +72,8 @@ public class Taiho : MonoBehaviour
 
         _turret.LookAtPoint(_turret.transform.position + _direction);
         //_trajectory.SetVisable(true);
-        _diraction = GetDiraction();
-        _trajectory.Draw(_diraction);
+        _direction = GetDiraction();
+        _trajectory.Draw(_direction);
     }
 
     /// <summary>

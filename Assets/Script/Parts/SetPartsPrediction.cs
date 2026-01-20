@@ -60,12 +60,14 @@ public class SetPartsPrediction : MonoBehaviour
     {
         if (index < 0 || _blockNum <= index) return;
 
-        _predictionBlocks[index]._transform.position = position;
-        _predictionBlocks[index]._renderer.enabled = true;
+        var block = _predictionBlocks[index];
 
-        Material[] mats = _predictionBlocks[index]._renderer.materials;
+        block._transform.position = position;
+        block._renderer.enabled = true;
+
+        var mats = block._renderer.sharedMaterials;
         mats[0] = (success) ? _successMaterial : _failMaterial;
-        _predictionBlocks[index]._renderer.materials = mats;
+        block._renderer.materials = mats;
 
     }
 }

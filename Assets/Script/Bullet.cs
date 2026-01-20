@@ -23,6 +23,10 @@ public class Bullet : MonoBehaviour
 
         _isMoving = false;
     }
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
 
     private void Update()
     {
